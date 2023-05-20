@@ -75,7 +75,6 @@ export class Character {
 
     private fromIdleToWalkAnimation() {
         if (this.walkAction.isRunning()) {
-            console.log("is walking anim")
             return
         }
 
