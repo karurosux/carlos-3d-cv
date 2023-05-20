@@ -1,18 +1,15 @@
+import * as THREE from "three";
 import { CameraManager } from "./CameraManager";
 import { Character } from "./Character";
 import { InputManager } from "./InputManager";
-import * as THREE from "three"
 import { LightsManager } from "./LightManager";
-import { GameManagerContext } from "./models/game-manager-state-machine/GameManagerContext";
-import { GameManagerBaseState, GameManagerBaseStateCtor } from "./models/game-manager-state-machine/GameManagerBaseState";
-import { GameManagerDefaultState } from "./models/game-manager-state-machine/GameManagerDefaultState";
 import { DialogTextLinesManager } from "./dialog-system/DialogTextLinesManager";
+import { GameManagerBaseState, GameManagerBaseStateCtor } from "./models/game-manager-state-machine/GameManagerBaseState";
+import { GameManagerContext } from "./models/game-manager-state-machine/GameManagerContext";
+import { GameManagerDefaultState } from "./models/game-manager-state-machine/GameManagerDefaultState";
 
 export class GameManager implements GameManagerContext {
     deltaTime = 0
-
-    // Events
-    onTextLineChange!: ((text: string) => void)
 
     readonly character: Character
     readonly cameraManager: CameraManager
@@ -32,7 +29,6 @@ export class GameManager implements GameManagerContext {
         this.currentState = new GameManagerDefaultState(this)
 
         this.textLineManager = new DialogTextLinesManager()
-        this.textLineManager.onTextLineChange = this.onTextLineChangeHandler.bind(this)
     }
 
     init() {
@@ -52,9 +48,5 @@ export class GameManager implements GameManagerContext {
     setState(clazz: GameManagerBaseStateCtor): void {
         this.currentState = new clazz(this)
         this.currentState.init?.()
-    }
-
-    private onTextLineChangeHandler(textLine: string) {
-        this.onTextLineChange?.(textLine)
     }
 }

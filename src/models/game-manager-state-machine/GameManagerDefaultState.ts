@@ -6,7 +6,7 @@ export class GameManagerDefaultState extends GameManagerBaseState {
         this.context.textLineManager.setTextLines([
             "Hey there!",
             "Welcome to my personal website.",
-            `My name is <b>${PersonInformation.FULL_NAME}</b>, nice to meet you!`,
+            `My name is ${PersonInformation.FULL_NAME}, nice to meet you!`,
             "Feel free to explore my space."
         ]);
     }

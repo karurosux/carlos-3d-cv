@@ -3,7 +3,10 @@ export class DialogTextLinesManager {
     textLines: string[] = []
 
     // Events
-    onTextLineChange!: ((textLine: string) => void)
+    static onTextLineChange: ((textLine: string) => void)[] = []
+    
+    // Global States
+    static renderingText = false
 
     get isShowingText() {
         return this.textLines.length && this.currentIndex > 0
@@ -16,10 +19,10 @@ export class DialogTextLinesManager {
     }
 
     nextLine() {
-        if (!this.textLines.length || !this.onTextLineChange) {
+        if (!this.textLines.length || DialogTextLinesManager.renderingText) {
             return
         }
         const textLine = this.textLines[this.currentIndex++] || ''
-        this.onTextLineChange(textLine)
+        DialogTextLinesManager.onTextLineChange.forEach(callback => callback(textLine))
     }
 }
