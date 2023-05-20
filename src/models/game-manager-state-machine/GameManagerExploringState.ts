@@ -10,6 +10,16 @@ export class GameManagerExploringState extends GameManagerBaseState {
     tick(): void {
         this.context.cameraManager.followCharacter(this.context.character)
 
+        this.performMovement();
+    }
+
+    private performMovement() {
+        if (!this.context.inputManager.isPressingAnyKey()) {
+            // No need to continue if nothing is being pressed.
+            this.context.character.stopMovement()
+            return
+        }
+
         if (this.context.inputManager.keypress['KeyW']) {
             this.context.character.moveUp()
         } else if (this.context.inputManager.keypress['KeyS']) {

@@ -34,42 +34,58 @@ export class Character {
     moveUp() {
         this.gltf.scene.translateZ(this.getCalculateSpeed())
         this.rotateTowards(180)
-        this.playWalkAnimation()
+        this.fromIdleToWalkAnimation()
     }
 
     moveDown() {
         this.gltf.scene.translateZ(-this.getCalculateSpeed())
         this.rotateTowards(0)
-        this.playWalkAnimation()
+        this.fromIdleToWalkAnimation()
     }
 
     moveLeft() {
         this.gltf.scene.translateX(-this.getCalculateSpeed())
         this.rotateTowards(-90)
-        this.playWalkAnimation()
+        this.fromIdleToWalkAnimation()
     }
 
     moveRight() {
         this.gltf.scene.translateX(this.getCalculateSpeed())
         this.rotateTowards(90)
-        this.playWalkAnimation()
+        this.fromIdleToWalkAnimation()
     }
 
-    private playWalkAnimation() {
-        if (this.walkAction.isRunning()) {
+    stopMovement() {
+        this.fromWalkToIdleAnimation()
+    }
+
+    private fromWalkToIdleAnimation() {
+        if (this.idleAction.isRunning()) {
             return
         }
-        this.walkAction.play()
-        this.idleAction.crossFadeTo(this.walkAction, 0.2, true)
+        if (this.walkAction.isRunning()) {
+            this.walkAction.fadeOut(0.5)
+        }
+        this.idleAction.reset()
+            .setEffectiveTimeScale(1)
+            .setEffectiveWeight(1)
+            .fadeIn(0.5)
+            .play()
     }
 
-    // private playIdleAnimation() {
-    //     if (this.idleAction.isRunning()) {
-    //         return
-    //     }
-    //     this.idleAction.play()
-    //     this.idleAction.fadeIn(0.2)
-    // }
+    private fromIdleToWalkAnimation() {
+        if (this.walkAction.isRunning()) {
+            console.log("is walking anim")
+            return
+        }
+
+        this.idleAction.fadeOut(0.5);
+        this.walkAction.reset()
+            .setEffectiveTimeScale(1)
+            .setEffectiveWeight(1)
+            .fadeIn(0.5)
+            .play()
+    }
 
     private rotateTowards(deg: number) {
         this.gltf.scene.setRotationFromAxisAngle(new THREE.Vector3(0, 1, 0), THREE.MathUtils.degToRad(deg))

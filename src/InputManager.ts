@@ -16,6 +16,10 @@ export class InputManager {
         return result
     }
 
+    isPressingAnyKey() {
+        return Object.values(this.keypress).some(val => val)
+    }
+
     private handleKeyDown(e: KeyboardEvent) {
         this.keypress[e.code] = true
     }
