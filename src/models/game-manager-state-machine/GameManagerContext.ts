@@ -2,6 +2,7 @@ import { CameraManager } from "../../CameraManager"
 import { Character } from "../../Character"
 import { InputManager } from "../../InputManager"
 import { LightsManager } from "../../LightManager"
+import { DialogTextLinesManager } from "../../dialog-system/DialogTextLinesManager"
 import { GameManagerBaseStateCtor } from "./GameManagerBaseState"
 
 export interface GameManagerContext {
@@ -11,6 +12,7 @@ export interface GameManagerContext {
     cameraManager: CameraManager
     inputManager: InputManager
     lightsManager: LightsManager
+    textLineManager: DialogTextLinesManager
 
     setState(clazz: GameManagerBaseStateCtor): void;
 }

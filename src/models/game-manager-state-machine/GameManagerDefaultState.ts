@@ -1,6 +1,16 @@
+import { PersonInformation } from "../../constants/PersonInformation";
 import { GameManagerBaseState } from "./GameManagerBaseState";
 
 export class GameManagerDefaultState extends GameManagerBaseState {
+    init() {
+        this.context.textLineManager.setTextLines([
+            "Hey there!",
+            "Welcome to my personal website.",
+            `My name is <b>${PersonInformation.FULL_NAME}</b>, nice to meet you!`,
+            "Feel free to explore my space."
+        ]);
+    }
+
     tick(): void {
         if (!this.context.character.loaded) {
             return
@@ -21,7 +31,7 @@ export class GameManagerDefaultState extends GameManagerBaseState {
         }
 
         if (this.context.inputManager.singlePress("Space")) {
-            console.log("SPACE PRESSED")
+            this.context.textLineManager.nextLine()
         }
     }
 }
