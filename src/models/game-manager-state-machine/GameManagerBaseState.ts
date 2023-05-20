@@ -3,7 +3,8 @@ import { GameManagerContext } from "./GameManagerContext";
 export abstract class GameManagerBaseState {
     constructor(protected context: GameManagerContext) { }
 
-    init?(): void;
+    init?(): void
+    detach?(): void
     abstract tick(): void
 
     updateDeltas() {

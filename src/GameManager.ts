@@ -46,6 +46,7 @@ export class GameManager implements GameManagerContext {
     }
 
     setState(clazz: GameManagerBaseStateCtor): void {
+        this.currentState?.detach?.()
         this.currentState = new clazz(this)
         this.currentState.init?.()
     }

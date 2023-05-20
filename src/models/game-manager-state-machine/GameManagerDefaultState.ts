@@ -1,5 +1,7 @@
 import { PersonInformation } from "../../constants/PersonInformation";
+import { DialogTextLinesManager } from "../../dialog-system/DialogTextLinesManager";
 import { GameManagerBaseState } from "./GameManagerBaseState";
+import { GameManagerExploringState } from "./GameManagerExploringState";
 
 export class GameManagerDefaultState extends GameManagerBaseState {
     init() {
@@ -9,6 +11,14 @@ export class GameManagerDefaultState extends GameManagerBaseState {
             `My name is ${PersonInformation.FULL_NAME}, nice to meet you!`,
             "Feel free to explore my space."
         ]);
+
+        DialogTextLinesManager.onTextLinesFinish.push(() => {
+            this.context.setState(GameManagerExploringState)
+        });
+    }
+
+    detach() {
+        DialogTextLinesManager.onTextLinesFinish.pop();
     }
 
     tick(): void {
@@ -16,19 +26,6 @@ export class GameManagerDefaultState extends GameManagerBaseState {
             return
         }
         this.context.cameraManager.followCharacter(this.context.character)
-
-        if (this.context.inputManager.keypress['KeyW']) {
-            this.context.character.moveUp()
-        }
-        if (this.context.inputManager.keypress['KeyS']) {
-            this.context.character.moveDown()
-        }
-        if (this.context.inputManager.keypress['KeyA']) {
-            this.context.character.moveLeft()
-        }
-        if (this.context.inputManager.keypress['KeyD']) {
-            this.context.character.moveRight()
-        }
 
         if (this.context.inputManager.singlePress("Space")) {
             this.context.textLineManager.nextLine()

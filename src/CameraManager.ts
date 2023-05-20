@@ -8,8 +8,9 @@ export type CameraConfig = {
 export class CameraManager {
     deltaTime = 0
     lerpSpeed = 3
+    cameraOffset: THREE.Vector3 = new THREE.Vector3(0, 0, 3)
+
     readonly camera: THREE.PerspectiveCamera;
-    readonly cameraOffset = new THREE.Vector3(0, 0, 3)
 
     constructor(private scene: THREE.Scene, private cameraConfig: CameraConfig) {
         this.camera = new THREE.PerspectiveCamera(60, this.cameraConfig.aspectRatio, 0.1, 1000)

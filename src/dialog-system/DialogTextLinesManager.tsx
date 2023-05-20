@@ -4,7 +4,8 @@ export class DialogTextLinesManager {
 
     // Events
     static onTextLineChange: ((textLine: string) => void)[] = []
-    
+    static onTextLinesFinish: (() => void)[] = []
+
     // Global States
     static renderingText = false
 
@@ -24,5 +25,9 @@ export class DialogTextLinesManager {
         }
         const textLine = this.textLines[this.currentIndex++] || ''
         DialogTextLinesManager.onTextLineChange.forEach(callback => callback(textLine))
+
+        if (this.textLines.length + 1 === this.currentIndex) {
+            DialogTextLinesManager.onTextLinesFinish.forEach(callback => callback())
+        }
     }
 }
