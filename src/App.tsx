@@ -1,9 +1,7 @@
-import { GameRenderer } from "./GameRenderer"
+import {GameRenderer} from "./GameRenderer"
 
 function App() {
-  return (
-    <GameRenderer />
-  )
+  return <GameRenderer />
 }
 
 export default App
