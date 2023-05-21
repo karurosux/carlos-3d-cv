@@ -1,8 +1,8 @@
-import {CameraManager} from "../../CameraManager"
-import {Character} from "../../Character"
-import {InputManager} from "../../InputManager"
-import {LightsManager} from "../../LightManager"
-import {DialogTextLinesManager} from "../../dialog-system/DialogTextLinesManager"
+import {CameraManager} from "../CameraManager"
+import {Character} from "../Character"
+import {InputManager} from "../InputManager"
+import {LightsManager} from "../LightManager"
+import {DialogTextLinesManager} from "../dialog-system/DialogTextLinesManager"
 import {GameManagerBaseStateCtor} from "./GameManagerBaseState"
 
 export interface GameManagerContext {

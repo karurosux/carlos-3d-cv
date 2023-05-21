@@ -37,19 +37,36 @@
       },
       {
         "key": 1684618210704,
-        "children": [],
+        "children": [
+          {
+            "key": 1684641031733,
+            "children": [],
+            "todo": {
+              "content": "Determine the shortest pad",
+              "id": 1684641031733,
+              "level": "default",
+              "done": true,
+              "start": 1684641031733,
+              "focus": false,
+              "end": 1684646342965
+            }
+          }
+        ],
         "todo": {
           "content": "Calculate rotation of the model based in inputs",
           "id": 1684618210704,
           "level": "warning",
-          "done": false,
-          "start": 1684618210704
+          "done": true,
+          "start": 1684618210704,
+          "focus": false,
+          "end": 1684641040848
         }
       }
     ],
     "expandKeys": [
       1684617948388,
-      1684618069629
+      1684618069629,
+      1684618210704
     ],
     "schema": "https://github.com/Saber2pr/vsc-ext-todolist/blob/master/src/api/type.ts#L3",
     "add_mode": "bottom",
@@ -60,6 +77,6 @@
     "autoSort": false,
     "showEndTime": false,
     "lang": "en",
-    "version": "1684618269460"
+    "version": "1684646342985"
   }
 }

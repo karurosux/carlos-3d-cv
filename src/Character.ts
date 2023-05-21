@@ -4,6 +4,7 @@ import {GLTF, GLTFLoader} from "three/addons/loaders/GLTFLoader.js"
 export class Character {
   gltf!: GLTF
   speed = 3
+  rotationSpeed = 8
   deltaTime = 0
   loaded = false
 
@@ -31,32 +32,43 @@ export class Character {
     return this.gltf?.scene?.position || new THREE.Vector3(0, 0, 0)
   }
 
-  moveUp() {
-    this.gltf.scene.translateZ(this.getCalculateSpeed())
-    this.rotateTowards(180)
+  performMovement(x: number, z: number) {
+    if (x === 0 && z === 0) {
+      this.fromWalkToIdleAnimation()
+      return
+    }
+    const calculatedSpeed = this.getCalculateSpeed()
+
     this.fromIdleToWalkAnimation()
+
+    this.gltf.scene.translateX(x * calculatedSpeed)
+    this.gltf.scene.translateZ(z * calculatedSpeed)
+
+    this.performRotation(x, z)
   }
 
-  moveDown() {
-    this.gltf.scene.translateZ(-this.getCalculateSpeed())
-    this.rotateTowards(0)
-    this.fromIdleToWalkAnimation()
-  }
+  private performRotation(x: number, z: number) {
+    const currentQuaternion = this.gltf.scene.quaternion
+      .clone()
+      .setFromEuler(this.gltf.scene.rotation)
+    currentQuaternion.x = 0
+    currentQuaternion.z = 0
 
-  moveLeft() {
-    this.gltf.scene.translateX(-this.getCalculateSpeed())
-    this.rotateTowards(-90)
-    this.fromIdleToWalkAnimation()
-  }
+    const targetEuler = this.gltf.scene.rotation.clone()
+    targetEuler.x = 0
+    targetEuler.z = 0
+    targetEuler.y = THREE.MathUtils.degToRad(
+      (Math.atan2(z, x) * 180) / Math.PI + 90
+    )
+    const targetQuaternion = currentQuaternion.clone().setFromEuler(targetEuler)
+    const newQuaternion = currentQuaternion
+      .clone()
+      .slerp(targetQuaternion, 0.05)
+    const newEuler = this.gltf.scene.rotation
+      .clone()
+      .setFromQuaternion(newQuaternion)
 
-  moveRight() {
-    this.gltf.scene.translateX(this.getCalculateSpeed())
-    this.rotateTowards(90)
-    this.fromIdleToWalkAnimation()
-  }
-
-  stopMovement() {
-    this.fromWalkToIdleAnimation()
+    this.gltf.scene.setRotationFromEuler(newEuler)
   }
 
   private fromWalkToIdleAnimation() {
@@ -86,13 +98,6 @@ export class Character {
       .setEffectiveWeight(1)
       .fadeIn(0.5)
       .play()
-  }
-
-  private rotateTowards(deg: number) {
-    this.gltf.scene.setRotationFromAxisAngle(
-      new THREE.Vector3(0, 1, 0),
-      THREE.MathUtils.degToRad(deg)
-    )
   }
 
   private getCalculateSpeed() {
