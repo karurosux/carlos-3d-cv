@@ -11,7 +11,6 @@ export class Character extends GLTFModelHandler {
   private walkAnimation!: THREE.AnimationClip
   private walkAction!: THREE.AnimationAction
   private animationMixer!: THREE.AnimationMixer
-  private previousPosition!: THREE.Vector3
   private raycaster: THREE.Raycaster
 
   constructor(private scene: THREE.Scene) {
@@ -46,7 +45,6 @@ export class Character extends GLTFModelHandler {
 
   private translateMesh(x: number, z: number) {
     const calculatedSpeed = this.getCalculateSpeed()
-    this.previousPosition = this.model.position.clone()
     this.checkRayCollision()
     this.model.translateX(x * calculatedSpeed)
     this.model.translateZ(z * calculatedSpeed)

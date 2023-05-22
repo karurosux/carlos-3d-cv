@@ -5,7 +5,7 @@ export abstract class GLTFModelHandler {
     return this.gltf?.scene
   }
 
-  protected loaded = false
+  loaded = false
   protected gltf!: GLTF
   private loader = new GLTFLoader()
 
