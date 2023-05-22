@@ -1,27 +1,28 @@
 import * as THREE from "three"
-import {GLTF, GLTFLoader} from "three/addons/loaders/GLTFLoader.js"
+import {GLTFModelHandler} from "./GLTFModelHandler"
 
-export class Character {
-  gltf!: GLTF
-  speed = 3
+export class Character extends GLTFModelHandler {
+  speed = 1.5
   rotationSpeed = 8
   deltaTime = 0
-  loaded = false
 
   private idleAnimation!: THREE.AnimationClip
   private idleAction!: THREE.AnimationAction
   private walkAnimation!: THREE.AnimationClip
   private walkAction!: THREE.AnimationAction
   private animationMixer!: THREE.AnimationMixer
-  private readonly loader = new GLTFLoader()
+  private previousPosition!: THREE.Vector3
+  private raycaster: THREE.Raycaster
 
   constructor(private scene: THREE.Scene) {
-    this.loader.load("character.gltf", (gltf) => {
-      this.gltf = gltf
-      this.setupAnimations()
-      this.scene.add(gltf.scene)
-      this.loaded = true
-    })
+    super("character.gltf")
+    this.raycaster = new THREE.Raycaster()
+  }
+
+  init(): void {
+    this.setupAnimations()
+    this.scene.add(this.model)
+    this.loaded = true
   }
 
   tick() {
@@ -37,38 +38,55 @@ export class Character {
       this.fromWalkToIdleAnimation()
       return
     }
-    const calculatedSpeed = this.getCalculateSpeed()
 
     this.fromIdleToWalkAnimation()
-
-    this.gltf.scene.translateX(x * calculatedSpeed)
-    this.gltf.scene.translateZ(z * calculatedSpeed)
-
+    this.translateMesh(x, z)
     this.performRotation(x, z)
   }
 
-  private performRotation(x: number, z: number) {
-    const currentQuaternion = this.gltf.scene.quaternion
+  private translateMesh(x: number, z: number) {
+    const calculatedSpeed = this.getCalculateSpeed()
+    this.previousPosition = this.model.position.clone()
+    this.checkRayCollision()
+    this.model.translateX(x * calculatedSpeed)
+    this.model.translateZ(z * calculatedSpeed)
+  }
+
+  private checkRayCollision() {
+    const worldDirection = new THREE.Vector3(0, 0, 0)
+    const originPosition = this.model.position
       .clone()
-      .setFromEuler(this.gltf.scene.rotation)
+      .add(new THREE.Vector3(0, 1, 0))
+    this.model.children[0].getWorldDirection(worldDirection)
+    const endPosition = originPosition
+      .clone()
+      .add(worldDirection.multiplyScalar(0.03))
+
+    this.raycaster.set(originPosition, endPosition)
+    const intersection = this.raycaster.intersectObjects(this.scene.children)
+    console.log("[intersection] ", intersection)
+  }
+
+  private performRotation(x: number, z: number) {
+    const currentQuaternion = this.model.children[0].quaternion
+      .clone()
+      .setFromEuler(this.model.children[0].rotation)
     currentQuaternion.x = 0
     currentQuaternion.z = 0
 
-    const targetEuler = this.gltf.scene.rotation.clone()
+    const targetEuler = this.model.children[0].rotation.clone()
     targetEuler.x = 0
     targetEuler.z = 0
     targetEuler.y = THREE.MathUtils.degToRad(
-      (Math.atan2(z, x) * 180) / Math.PI + 90
+      (Math.atan2(-z, x) * 180) / Math.PI + 90
     )
     const targetQuaternion = currentQuaternion.clone().setFromEuler(targetEuler)
-    const newQuaternion = currentQuaternion
-      .clone()
-      .slerp(targetQuaternion, 0.05)
-    const newEuler = this.gltf.scene.rotation
+    const newQuaternion = currentQuaternion.clone().slerp(targetQuaternion, 0.1)
+    const newEuler = this.model.children[0].rotation
       .clone()
       .setFromQuaternion(newQuaternion)
 
-    this.gltf.scene.setRotationFromEuler(newEuler)
+    this.model.children[0].setRotationFromEuler(newEuler)
   }
 
   private fromWalkToIdleAnimation() {
@@ -76,13 +94,13 @@ export class Character {
       return
     }
     if (this.walkAction.isRunning()) {
-      this.walkAction.fadeOut(0.5)
+      this.walkAction.fadeOut(0.2)
     }
     this.idleAction
       .reset()
       .setEffectiveTimeScale(1)
       .setEffectiveWeight(1)
-      .fadeIn(0.5)
+      .fadeIn(0.2)
       .play()
   }
 
@@ -91,12 +109,12 @@ export class Character {
       return
     }
 
-    this.idleAction.fadeOut(0.5)
+    this.idleAction.fadeOut(0.2)
     this.walkAction
       .reset()
       .setEffectiveTimeScale(1)
       .setEffectiveWeight(1)
-      .fadeIn(0.5)
+      .fadeIn(0.2)
       .play()
   }
 
@@ -105,7 +123,7 @@ export class Character {
   }
 
   private setupAnimations() {
-    this.animationMixer = new THREE.AnimationMixer(this.gltf.scene)
+    this.animationMixer = new THREE.AnimationMixer(this.model)
 
     this.idleAnimation = THREE.AnimationClip.findByName(
       this.gltf.animations,

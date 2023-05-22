@@ -13,13 +13,13 @@ export function GameRenderer() {
   useEffect(() => {
     clock.current = new THREE.Clock()
     scene.current = new THREE.Scene()
-    scene.current.background = new THREE.Color(0xff0000)
 
     // Setting up renderer from three js
     renderer.current = new THREE.WebGLRenderer({
       canvas: elementRef.current as HTMLCanvasElement,
       antialias: true,
     })
+    
     renderer.current.setSize(
       elementRef.current?.clientWidth as number,
       elementRef.current?.clientHeight as number

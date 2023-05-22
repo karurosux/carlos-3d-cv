@@ -10,6 +10,7 @@ import {
   GameManagerBaseStateCtor,
 } from "./GameManagerBaseState"
 import {GameManagerDefaultState} from "./GameManagerDefaultState"
+import {RoomWalls} from "../RoomWalls"
 
 export class GameManager implements GameManagerContext {
   deltaTime = 0
@@ -19,12 +20,14 @@ export class GameManager implements GameManagerContext {
   readonly inputManager: InputManager
   readonly lightsManager: LightsManager
   readonly textLineManager: DialogTextLinesManager
+  readonly room: RoomWalls
 
   private currentState: GameManagerBaseState
 
   constructor(public aspectRatio: number, private scene: THREE.Scene) {
     this.inputManager = new InputManager()
     this.character = new Character(this.scene)
+    this.room = new RoomWalls(this.scene)
     this.cameraManager = new CameraManager(this.scene, {
       aspectRatio: this.aspectRatio,
     })

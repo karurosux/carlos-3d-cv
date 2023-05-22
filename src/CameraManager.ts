@@ -8,7 +8,7 @@ export type CameraConfig = {
 export class CameraManager {
   deltaTime = 0
   lerpSpeed = 3
-  cameraOffset: THREE.Vector3 = new THREE.Vector3(0, 0, 3)
+  cameraOffset: THREE.Vector3 = new THREE.Vector3(0, 1, 3)
 
   readonly camera: THREE.PerspectiveCamera
 
@@ -30,6 +30,8 @@ export class CameraManager {
     const playerPosition = character.getPlayerPosition()
     const cameraPosition = playerPosition.clone().add(this.cameraOffset)
     this.camera.lookAt(playerPosition)
+    this.camera.rotation.y = 0
+    this.camera.rotation.z = 0
     this.camera.position.lerp(cameraPosition, this.lerpSpeed * this.deltaTime)
   }
 }

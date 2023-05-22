@@ -9,7 +9,8 @@
           "id": 1684618032963,
           "level": "default",
           "done": false,
-          "start": 1684618032963
+          "start": 1684618032963,
+          "focus": false
         }
       },
       {
@@ -61,12 +62,43 @@
           "focus": false,
           "end": 1684641040848
         }
+      },
+      {
+        "key": 1684646560427,
+        "children": [],
+        "todo": {
+          "content": "Fix issue of text manager throwing new text line threads even if its not ready yet",
+          "id": 1684646560427,
+          "level": "danger",
+          "done": false,
+          "start": 1684646560427
+        }
+      },
+      {
+        "key": 1684692601578,
+        "children": [],
+        "todo": {
+          "content": "Place all room items",
+          "id": 1684692601578,
+          "level": "default",
+          "done": false,
+          "start": 1684692601578
+        }
+      },
+      {
+        "key": 1684692613311,
+        "children": [],
+        "todo": {
+          "content": "Program all room items",
+          "id": 1684692613311,
+          "level": "default",
+          "done": false,
+          "start": 1684692613311
+        }
       }
     ],
     "expandKeys": [
-      1684617948388,
-      1684618069629,
-      1684618210704
+      1684617948388
     ],
     "schema": "https://github.com/Saber2pr/vsc-ext-todolist/blob/master/src/api/type.ts#L3",
     "add_mode": "bottom",
@@ -77,6 +109,6 @@
     "autoSort": false,
     "showEndTime": false,
     "lang": "en",
-    "version": "1684646342985"
+    "version": "1684692673064"
   }
 }

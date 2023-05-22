@@ -18,7 +18,7 @@ export class InputManager {
 
   getMovementAxis() {
     const xAxis = this.keypress["KeyD"] ? 1 : this.keypress["KeyA"] ? -1 : 0
-    const zAxis = this.keypress["KeyW"] ? 1 : this.keypress["KeyS"] ? -1 : 0
+    const zAxis = this.keypress["KeyS"] ? 1 : this.keypress["KeyW"] ? -1 : 0
     return {xAxis, zAxis}
   }
 
