@@ -1,25 +1,16 @@
 import { Environment, KeyboardControls, Sky } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 import { Physics } from "@react-three/rapier";
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import * as THREE from "three";
 import Character, { CharaterRef } from "./actors/Character";
 import Room from "./actors/Room";
 
 function App() {
-  const audioRef = useRef(new Audio("bgmusic.flac"));
   const cameraRef = useRef<THREE.PerspectiveCamera>(
     new THREE.PerspectiveCamera(60, 1.5, 0.1, 1000)
   );
   const characterRef = useRef<CharaterRef>(null);
-
-  useEffect(() => {
-    audioRef.current.loop = true;
-    audioRef.current.volume = 0.25;
-    setTimeout(() => {
-      audioRef.current.play();
-    }, 4000);
-  }, []);
 
   return (
     <>

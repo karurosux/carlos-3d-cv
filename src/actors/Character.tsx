@@ -20,6 +20,7 @@ const Character = forwardRef<CharaterRef, Props>(function Character(
   props: Props,
   externalRef
 ) {
+  const audioRef = useRef(new Audio("bgmusic.flac"));
   const bodyRef = useRef<RapierRigidBody>(null);
   const cameraPosition = useRef<THREE.Vector3>(new THREE.Vector3(0, 0, 0));
   const currentAnimation = useRef<AnimationAction>();
@@ -99,6 +100,13 @@ const Character = forwardRef<CharaterRef, Props>(function Character(
       fadeAnimation(actions.idle_loop);
       resetVelocity();
       return;
+    }
+
+    if (audioRef.current.paused) {
+      console.log("Entered...");
+      audioRef.current.loop = true;
+      audioRef.current.volume = 0.25;
+      audioRef.current.play();
     }
 
     bodyRef.current.setLinvel(
