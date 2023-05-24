@@ -1,9 +1,10 @@
 import { useAnimations, useKeyboardControls } from "@react-three/drei";
 import { useFrame, useLoader } from "@react-three/fiber";
+import { RapierRigidBody, RigidBody } from "@react-three/rapier";
 import { forwardRef, useEffect, useImperativeHandle, useRef } from "react";
+import * as THREE from "three";
 import { AnimationAction, Mesh } from "three";
 import { GLTF, GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
-import * as THREE from "three";
 
 type Props = {
   movementSpeed?: number;
@@ -19,11 +20,12 @@ const Character = forwardRef<CharaterRef, Props>(function Character(
   props: Props,
   externalRef
 ) {
+  const bodyRef = useRef<RapierRigidBody>(null);
   const cameraPosition = useRef<THREE.Vector3>(new THREE.Vector3(0, 0, 0));
   const currentAnimation = useRef<AnimationAction>();
   const gltf: GLTF = useLoader(GLTFLoader, "character.gltf");
   const { ref, actions, mixer } = useAnimations(gltf.animations);
-  const [_, getKeys] = useKeyboardControls();
+  const [subscribeKey, getKeys] = useKeyboardControls();
 
   useImperativeHandle(externalRef, () => ({
     model: () => gltf.scene as any,
@@ -33,33 +35,51 @@ const Character = forwardRef<CharaterRef, Props>(function Character(
     actions.idle_loop.timeScale = 0.5;
     actions.idle_loop.play();
     currentAnimation.current = actions.idle_loop;
+
+    subscribeKey(
+      (state) => state.interact,
+      (down) => {
+        if (!down) {
+          return;
+        }
+        bodyRef.current.setTranslation({ x: 0, y: 1, z: 0 }, true);
+      }
+    );
   }, []);
 
   useFrame(({ camera }, delta) => {
     cameraFollow(camera as THREE.PerspectiveCamera, delta);
-    performMovement(delta);
+    checkMovement(delta);
     mixer.update(delta);
   });
 
   return (
-    <mesh ref={ref as any}>
-      <primitive object={gltf.scene} />
-    </mesh>
+    <RigidBody
+      ref={bodyRef}
+      colliders={"cuboid"}
+      position={[0, 2, 0]}
+      lockRotations
+    >
+      <mesh ref={ref as any}>
+        <primitive object={gltf.scene} />
+      </mesh>
+    </RigidBody>
   );
 
   function cameraFollow(camera: THREE.PerspectiveCamera, delta: number) {
-    const model = getModel();
-    cameraPosition.current.copy(model.position.clone().add(props.cameraOffset));
+    const position = getModel().position.clone();
+    getModel().getWorldPosition(position);
+    cameraPosition.current.copy(position.clone().add(props.cameraOffset));
     camera.position.lerp(
       cameraPosition.current,
       props.cameraMovementSpeed * delta
     );
-    camera.lookAt(model.position);
+    camera.lookAt(position);
     camera.rotation.y = 0;
     camera.rotation.z = 0;
   }
 
-  function performMovement(delta: number) {
+  function checkMovement(delta: number) {
     const { forward, backward, left, right } = getKeys();
     const xAxis = right ? 1 : left ? -1 : 0;
     const zAxis = forward ? -1 : backward ? 1 : 0;
@@ -70,11 +90,26 @@ const Character = forwardRef<CharaterRef, Props>(function Character(
   function move(x: number, z: number, delta: number) {
     if (x === 0 && z === 0) {
       fadeAnimation(actions.idle_loop);
+      resetVelocity();
       return;
     }
-    getModel().translateX(x * props.movementSpeed * delta);
-    getModel().translateZ(z * props.movementSpeed * delta);
+
+    bodyRef.current.setLinvel(
+      {
+        x: x * props.movementSpeed * delta,
+        y: bodyRef.current.linvel().y,
+        z: z * props.movementSpeed * delta,
+      },
+      true
+    );
     fadeAnimation(actions.walk_loop);
+  }
+
+  function resetVelocity() {
+    bodyRef.current.setLinvel(
+      { x: 0, y: bodyRef.current.linvel().y, z: 0 },
+      true
+    );
   }
 
   function getModel() {
@@ -127,9 +162,9 @@ const Character = forwardRef<CharaterRef, Props>(function Character(
 });
 
 Character.defaultProps = {
-  movementSpeed: 1.5,
+  movementSpeed: 100,
   cameraMovementSpeed: 1.3,
-  cameraOffset: new THREE.Vector3(0, 3, 4),
+  cameraOffset: new THREE.Vector3(0, 2, 4),
 };
 
 export default Character;
