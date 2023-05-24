@@ -42,7 +42,7 @@ const Character = forwardRef<CharaterRef, Props>(function Character(
         if (!down) {
           return;
         }
-        bodyRef.current.setTranslation({ x: 0, y: 1, z: 0 }, true);
+        // TODO: Here will fire ray trace
       }
     );
   }, []);
@@ -50,6 +50,7 @@ const Character = forwardRef<CharaterRef, Props>(function Character(
   useFrame(({ camera }, delta) => {
     cameraFollow(camera as THREE.PerspectiveCamera, delta);
     checkMovement(delta);
+    checkForRespawn();
     mixer.update(delta);
   });
 
@@ -57,7 +58,7 @@ const Character = forwardRef<CharaterRef, Props>(function Character(
     <RigidBody
       ref={bodyRef}
       colliders={"cuboid"}
-      position={[0, 2, 0]}
+      gravityScale={1}
       lockRotations
     >
       <mesh ref={ref as any}>
@@ -65,6 +66,12 @@ const Character = forwardRef<CharaterRef, Props>(function Character(
       </mesh>
     </RigidBody>
   );
+
+  function checkForRespawn() {
+    if (bodyRef.current.translation().y < -3) {
+      bodyRef.current.setTranslation({ x: 0, y: 0, z: 0 }, true);
+    }
+  }
 
   function cameraFollow(camera: THREE.PerspectiveCamera, delta: number) {
     const position = getModel().position.clone();
@@ -87,7 +94,7 @@ const Character = forwardRef<CharaterRef, Props>(function Character(
     rotate(xAxis, zAxis, delta);
   }
 
-  function move(x: number, z: number, delta: number) {
+  function move(x: number, z: number, _: number) {
     if (x === 0 && z === 0) {
       fadeAnimation(actions.idle_loop);
       resetVelocity();
@@ -96,9 +103,9 @@ const Character = forwardRef<CharaterRef, Props>(function Character(
 
     bodyRef.current.setLinvel(
       {
-        x: x * props.movementSpeed * delta,
+        x: x * props.movementSpeed,
         y: bodyRef.current.linvel().y,
-        z: z * props.movementSpeed * delta,
+        z: z * props.movementSpeed,
       },
       true
     );
@@ -162,7 +169,7 @@ const Character = forwardRef<CharaterRef, Props>(function Character(
 });
 
 Character.defaultProps = {
-  movementSpeed: 100,
+  movementSpeed: 2,
   cameraMovementSpeed: 1.3,
   cameraOffset: new THREE.Vector3(0, 2, 4),
 };

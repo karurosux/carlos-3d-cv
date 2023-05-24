@@ -16,12 +16,22 @@ function Room() {
         castShadow
       />
       <mesh>
-        <RigidBody lockRotations lockTranslations colliders={"trimesh"} gravityScale={0}>
+        <RigidBody
+          lockRotations
+          lockTranslations
+          colliders={"trimesh"}
+          gravityScale={0}
+        >
           <primitive object={gltf.scene} />
         </RigidBody>
       </mesh>
+      <InvisileWall />
     </>
   );
+}
+
+function InvisileWall() {
+  return <></>;
 }
 
 export default Room;
