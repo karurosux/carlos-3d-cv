@@ -26,9 +26,9 @@ function App() {
         >
           <Canvas camera={cameraRef.current}>
             <fog attach="fog" args={["white", 0, 500]} />
-            <Sky sunPosition={[100, 10, 100]} />
-            <ambientLight intensity={0.5} />
-            <pointLight position={[10, 10, 10]} />
+            <Sky sunPosition={[100, -10, 100]} />
+            <ambientLight color="#b69cff" intensity={0.1} />
+            <pointLight position={[10, 10, 10]} intensity={0.1} />
             <Physics>
               <Character ref={characterRef} />
               <Room />

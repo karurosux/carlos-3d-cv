@@ -9,11 +9,11 @@ function Room() {
 
   return (
     <>
-      <pointLight position={[1, 1, 0]} color="red" castShadow />
+      <pointLight intensity={0.1} position={[1, 1, 0]} color="red" castShadow />
       <pointLight
         position={[-2, 0.3, -0.2]}
         color="blue"
-        intensity={3}
+        intensity={0.1}
         castShadow
       />
       <mesh>
