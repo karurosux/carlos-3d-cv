@@ -2,6 +2,7 @@ import { useLoader } from "@react-three/fiber";
 import { RigidBody } from "@react-three/rapier";
 import { GLTF, GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import Radio from "./Radio";
+import Desk from "./Desk";
 
 function Room() {
   const gltf: GLTF = useLoader(GLTFLoader, "models/CVRoom.gltf");
@@ -16,8 +17,9 @@ function Room() {
         intensity={0.1}
         castShadow
       />
-      <mesh>
+      <mesh receiveShadow>
         <RigidBody
+          type="fixed"
           lockRotations
           lockTranslations
           colliders={"trimesh"}
@@ -27,6 +29,7 @@ function Room() {
         </RigidBody>
       </mesh>
       <Radio />
+      <Desk />
       <InvisileWall />
     </>
   );

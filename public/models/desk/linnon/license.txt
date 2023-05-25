@@ -1,0 +1,11 @@
+Model Information:
+* title:	Linnmon/Alex by Ikea - Computer Desk
+* source:	https://sketchfab.com/3d-models/linnmonalex-by-ikea-computer-desk-45dadf1d294c461195e92c1cdeb8aabf
+* author:	TetsuoTetsuo (https://sketchfab.com/TetsuoTetsuo)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Linnmon/Alex by Ikea - Computer Desk" (https://sketchfab.com/3d-models/linnmonalex-by-ikea-computer-desk-45dadf1d294c461195e92c1cdeb8aabf) by TetsuoTetsuo (https://sketchfab.com/TetsuoTetsuo) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

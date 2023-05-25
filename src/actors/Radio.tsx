@@ -26,6 +26,7 @@ function Radio(props: Props) {
           state.interact,
         (up) => {
           if (up && audioRef.current && !audioRef.current?.isPlaying) {
+            audioRef.current.setVolume(0.4);
             audioRef.current.setLoop(true);
             audioRef.current.play();
           }
@@ -37,6 +38,7 @@ function Radio(props: Props) {
   return (
     <RigidBody position={props.initialPositon}>
       <rectAreaLight
+        castShadow
         rotation={[0, THREE.MathUtils.degToRad(180), 0]}
         position={[0, 0.2, 0.1]}
         args={["orange", 15, 0.4, 0.3]}
@@ -50,7 +52,7 @@ function Radio(props: Props) {
 }
 
 Radio.defaultProps = {
-  initialPositon: new THREE.Vector3(0, 0, -2),
+  initialPositon: new THREE.Vector3(2, 0, -2),
 } as Partial<Props>;
 
 export default Radio;
