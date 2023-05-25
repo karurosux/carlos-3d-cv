@@ -20,7 +20,6 @@ const Character = forwardRef<CharaterRef, Props>(function Character(
   props: Props,
   externalRef
 ) {
-  // const audioRef = useRef(new Audio("audio/bgmusic.flac"));
   const bodyRef = useRef<RapierRigidBody>(null);
   const cameraPosition = useRef<THREE.Vector3>(new THREE.Vector3(0, 0, 0));
   const currentAnimation = useRef<AnimationAction>();
@@ -101,12 +100,6 @@ const Character = forwardRef<CharaterRef, Props>(function Character(
       resetVelocity();
       return;
     }
-
-    // if (audioRef.current.paused) {
-    //   audioRef.current.loop = true;
-    //   audioRef.current.volume = 0.45;
-    //   audioRef.current.play();
-    // }
 
     bodyRef.current.setLinvel(
       {
