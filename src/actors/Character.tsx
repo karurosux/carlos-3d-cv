@@ -20,11 +20,11 @@ const Character = forwardRef<CharaterRef, Props>(function Character(
   props: Props,
   externalRef
 ) {
-  const audioRef = useRef(new Audio("bgmusic.flac"));
+  const audioRef = useRef(new Audio("audio/bgmusic.flac"));
   const bodyRef = useRef<RapierRigidBody>(null);
   const cameraPosition = useRef<THREE.Vector3>(new THREE.Vector3(0, 0, 0));
   const currentAnimation = useRef<AnimationAction>();
-  const gltf: GLTF = useLoader(GLTFLoader, "character.gltf");
+  const gltf: GLTF = useLoader(GLTFLoader, "models/character.gltf");
   const { ref, actions, mixer } = useAnimations(gltf.animations);
   const [subscribeKey, getKeys] = useKeyboardControls();
 
@@ -103,9 +103,8 @@ const Character = forwardRef<CharaterRef, Props>(function Character(
     }
 
     if (audioRef.current.paused) {
-      console.log("Entered...");
       audioRef.current.loop = true;
-      audioRef.current.volume = 0.25;
+      audioRef.current.volume = 0.45;
       audioRef.current.play();
     }
 
@@ -177,7 +176,7 @@ const Character = forwardRef<CharaterRef, Props>(function Character(
 });
 
 Character.defaultProps = {
-  movementSpeed: 2,
+  movementSpeed: 1.5,
   cameraMovementSpeed: 1.3,
   cameraOffset: new THREE.Vector3(0, 2, 4),
 };

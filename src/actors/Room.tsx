@@ -1,9 +1,10 @@
 import { useLoader } from "@react-three/fiber";
 import { RigidBody } from "@react-three/rapier";
 import { GLTF, GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
+import Radio from "./Radio";
 
 function Room() {
-  const gltf: GLTF = useLoader(GLTFLoader, "CVRoom.gltf");
+  const gltf: GLTF = useLoader(GLTFLoader, "models/CVRoom.gltf");
   gltf.scene.position.y = 0.2;
 
   return (
@@ -25,6 +26,7 @@ function Room() {
           <primitive object={gltf.scene} />
         </RigidBody>
       </mesh>
+      <Radio />
       <InvisileWall />
     </>
   );
