@@ -2,10 +2,10 @@ import { useLoader } from "@react-three/fiber";
 import { RigidBody } from "@react-three/rapier";
 import { GLTF, GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import Radio from "./Radio";
-import Desk from "./Desk";
+import * as THREE from "three";
 
 function Room() {
-  const gltf: GLTF = useLoader(GLTFLoader, "models/CVRoom.gltf");
+  const gltf: GLTF = useLoader(GLTFLoader, "models/room.glb");
   gltf.scene.position.y = 0.2;
 
   return (
@@ -17,7 +17,7 @@ function Room() {
         intensity={0.1}
         castShadow
       />
-      <mesh receiveShadow>
+      <mesh receiveShadow rotation={[0, THREE.MathUtils.degToRad(-45), 0]}>
         <RigidBody
           type="fixed"
           lockRotations
@@ -29,7 +29,6 @@ function Room() {
         </RigidBody>
       </mesh>
       <Radio />
-      <Desk />
       <InvisileWall />
     </>
   );

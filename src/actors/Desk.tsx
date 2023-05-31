@@ -12,7 +12,7 @@ function Desk(props: Props) {
   const stuff: GLTF = useLoader(GLTFLoader, "models/desk/stuff/scene.gltf");
 
   return (
-    <group position={props.initialPosition}>
+    <group name="desk" position={props.initialPosition}>
       <RigidBody type="fixed">
         <mesh scale={0.013}>
           <primitive object={linnon.scene} />

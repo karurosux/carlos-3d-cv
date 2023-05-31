@@ -1,6 +1,6 @@
 import { useKeyboardControls } from "@react-three/drei";
-import { useLoader } from "@react-three/fiber";
-import { RigidBody } from "@react-three/rapier";
+import { useFrame, useLoader } from "@react-three/fiber";
+import { RapierRigidBody, RigidBody } from "@react-three/rapier";
 import { useEffect, useRef } from "react";
 import * as THREE from "three";
 import { GLTF, GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
@@ -13,7 +13,21 @@ type Props = {
 function Radio(props: Props) {
   const gltf: GLTF = useLoader(GLTFLoader, "models/radio/scene.gltf");
   const audioRef = useRef<THREE.PositionalAudio>(null);
+  const bodyRef = useRef<RapierRigidBody>(null);
   const [subscribeKey] = useKeyboardControls();
+
+  useFrame(() => {
+    if (bodyRef.current.translation().y < -5) {
+      bodyRef.current.setTranslation(
+        {
+          x: props.initialPositon.x,
+          y: props.initialPositon.y,
+          z: props.initialPositon.z,
+        },
+        true
+      );
+    }
+  });
 
   useEffect(
     () =>
@@ -36,7 +50,7 @@ function Radio(props: Props) {
   );
 
   return (
-    <RigidBody position={props.initialPositon}>
+    <RigidBody ref={bodyRef} name="radio" position={props.initialPositon}>
       <rectAreaLight
         castShadow
         rotation={[0, THREE.MathUtils.degToRad(180), 0]}
@@ -52,7 +66,7 @@ function Radio(props: Props) {
 }
 
 Radio.defaultProps = {
-  initialPositon: new THREE.Vector3(2, 0, -2),
+  initialPositon: new THREE.Vector3(1, 0, 0),
 } as Partial<Props>;
 
 export default Radio;

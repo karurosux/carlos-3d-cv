@@ -1,7 +1,13 @@
-import { useAnimations, useKeyboardControls } from "@react-three/drei";
-import { useFrame, useLoader } from "@react-three/fiber";
+import { Line, useAnimations, useKeyboardControls } from "@react-three/drei";
+import { useFrame, useLoader, useThree } from "@react-three/fiber";
 import { RapierRigidBody, RigidBody } from "@react-three/rapier";
-import { forwardRef, useEffect, useImperativeHandle, useRef } from "react";
+import {
+  forwardRef,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from "react";
 import * as THREE from "three";
 import { AnimationAction, Mesh } from "three";
 import { GLTF, GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
@@ -26,6 +32,8 @@ const Character = forwardRef<CharaterRef, Props>(function Character(
   const gltf: GLTF = useLoader(GLTFLoader, "models/character.gltf");
   const { ref, actions, mixer } = useAnimations(gltf.animations);
   const [subscribeKey, getKeys] = useKeyboardControls();
+  const { raycaster, scene } = useThree();
+  const [line, setLine] = useState<THREE.Vector3[]>([]);
 
   useImperativeHandle(externalRef, () => ({
     model: () => gltf.scene as any,
@@ -42,7 +50,8 @@ const Character = forwardRef<CharaterRef, Props>(function Character(
         if (!down) {
           return;
         }
-        // TODO: Here will fire ray trace
+        setLine(getRayTraceCoords());
+        interact();
       }
     );
   }, []);
@@ -61,6 +70,7 @@ const Character = forwardRef<CharaterRef, Props>(function Character(
       gravityScale={1}
       lockRotations
     >
+      {line.length && <Line color="red" lineWidth={1} points={line} />}
       <mesh ref={ref as any}>
         <primitive object={gltf.scene} />
       </mesh>
@@ -68,7 +78,7 @@ const Character = forwardRef<CharaterRef, Props>(function Character(
   );
 
   function checkForRespawn() {
-    if (bodyRef.current.translation().y < -3) {
+    if (bodyRef.current.translation().y < -5) {
       bodyRef.current.setTranslation({ x: 0, y: 0, z: 0 }, true);
     }
   }
@@ -166,12 +176,51 @@ const Character = forwardRef<CharaterRef, Props>(function Character(
 
     model.children[0].setRotationFromEuler(newEuler);
   }
+
+  function interact() {
+    const [origin, target] = getRayTraceCoords();
+    raycaster.set(origin, target);
+
+    const interactables = [
+      scene.getObjectByName("radio"),
+      scene.getObjectByName("desk"),
+    ];
+    raycaster.params.Line = {
+      threshold: 1,
+    };
+
+    const intersection = raycaster.intersectObjects(interactables);
+
+    console.log("intersect ", intersection);
+  }
+
+  function getRayTraceCoords() {
+    if (!getModel()) {
+      return [];
+    }
+
+    const currentPosition = new THREE.Vector3();
+    getModel().getWorldPosition(currentPosition);
+    const forwardVector = new THREE.Vector3();
+    getModel().children[0].getWorldDirection(forwardVector);
+
+    const origin = forwardVector.clone().normalize().multiplyScalar(0.1);
+
+    const target = origin
+      .clone()
+      .add(forwardVector.clone().normalize().multiplyScalar(0.9));
+
+    origin.y = 0.2;
+    target.y = 0.2;
+
+    return [origin, target];
+  }
 });
 
 Character.defaultProps = {
   movementSpeed: 1.5,
   cameraMovementSpeed: 1.3,
-  cameraOffset: new THREE.Vector3(0, 2, 4),
+  cameraOffset: new THREE.Vector3(0, 6, 10),
 };
 
 export default Character;
