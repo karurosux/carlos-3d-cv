@@ -1,5 +1,10 @@
 import { KeyboardControls } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
+import {
+  Bloom,
+  EffectComposer,
+  ChromaticAberration,
+} from "@react-three/postprocessing";
 import { Physics } from "@react-three/rapier";
 import { useEffect, useRef } from "react";
 import * as THREE from "three";
@@ -30,13 +35,24 @@ function App() {
         >
           <Canvas camera={cameraRef.current}>
             <fog attach="fog" args={["white", 0, 500]} />
-            <color attach="background" args={["#3c2b87"]} />
-            <ambientLight color="#b69cff" intensity={0.1} />
-            <pointLight position={[10, 10, 10]} intensity={0.01} />
+            <color attach="background" args={["#2e1357"]} />
+            <ambientLight color="#b69cff" intensity={0.08} />
             <Physics>
               <Character ref={characterRef} />
               <Room />
             </Physics>
+            <EffectComposer>
+              <Bloom
+                luminanceThreshold={0}
+                luminanceSmoothing={1.6}
+                height={300}
+              />
+              <ChromaticAberration
+                radialModulation={true}
+                modulationOffset={0.1}
+                offset={new THREE.Vector2(0.005, 0.005)}
+              />
+            </EffectComposer>
           </Canvas>
         </KeyboardControls>
       </div>
