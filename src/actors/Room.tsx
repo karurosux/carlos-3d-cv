@@ -10,15 +10,52 @@ function Room() {
   const gltf: GLTF = useLoader(GLTFLoader, "models/room.glb");
   gltf.scene.position.y = 0.2;
 
+  const meshUpdateMap: Record<string, (mesh: THREE.Mesh) => void> = {
+    "lamp-cover": (cover) => {
+      const material = cover.material as MeshPhysicalMaterialProps;
+      material.emissive = new THREE.Color("#ffffff");
+      material.emissiveIntensity = 10;
+    },
+    wall: (wall) => {
+      const material = wall.material as MeshPhysicalMaterialProps;
+      material.roughness = 1;
+    },
+    door: (door) => {
+      const material = door.material as MeshPhysicalMaterialProps;
+      material.roughness = 1;
+    },
+    floor: (floor) => {
+      const material = floor.material as MeshPhysicalMaterialProps;
+      material.roughness = 0.1;
+      material.specularIntensity = 0.5;
+      material.clearcoat = 1;
+      material.clearcoatRoughness = 0;
+    },
+    "thrash-pin": (thrash) => {
+      const material = thrash.material as MeshPhysicalMaterialProps;
+      material.metalness = 0.7;
+      material.roughness = 0.3;
+    },
+    window: (wdw) => {
+      const material = wdw.material as MeshPhysicalMaterialProps;
+      material.roughness = 0.1;
+    },
+    shelve: (shelve) => {
+      const material = shelve.material as MeshPhysicalMaterialProps;
+      material.roughness = 0.7;
+    }
+  };
+
   useEffect(() => {
     gltf.scene.traverse((obj) => {
       if (obj.type === "Mesh") {
         const mesh = obj as THREE.Mesh;
         const name = kebabCase(obj.name);
-        if (name === "lamp-cover") {
-          const material = mesh.material as MeshPhysicalMaterialProps;
-          material.emissive = new THREE.Color("#ffffff");
-          material.emissiveIntensity = 10;
+        const updateFunction = meshUpdateMap[name];
+        if (updateFunction) {
+          updateFunction(mesh);
+        } else {
+          console.log(name, " update function not found", mesh.material);
         }
       }
     });
