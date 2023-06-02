@@ -43,7 +43,7 @@ function Room() {
     shelve: (shelve) => {
       const material = shelve.material as MeshPhysicalMaterialProps;
       material.roughness = 0.7;
-    }
+    },
   };
 
   useEffect(() => {
@@ -54,8 +54,6 @@ function Room() {
         const updateFunction = meshUpdateMap[name];
         if (updateFunction) {
           updateFunction(mesh);
-        } else {
-          console.log(name, " update function not found", mesh.material);
         }
       }
     });
@@ -84,7 +82,11 @@ function Room() {
         intensity={5}
         castShadow
       />
-      <mesh receiveShadow rotation={[0, THREE.MathUtils.degToRad(-45), 0]}>
+      <mesh
+        receiveShadow
+        castShadow
+        rotation={[0, THREE.MathUtils.degToRad(-45), 0]}
+      >
         <RigidBody
           type="fixed"
           lockRotations

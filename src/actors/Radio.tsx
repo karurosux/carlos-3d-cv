@@ -40,7 +40,7 @@ function Radio(props: Props) {
           state.interact,
         (up) => {
           if (up && audioRef.current && !audioRef.current?.isPlaying) {
-            audioRef.current.setVolume(0.4);
+            audioRef.current.setVolume(0.8);
             audioRef.current.setLoop(true);
             audioRef.current.play();
           }

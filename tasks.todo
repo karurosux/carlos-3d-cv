@@ -8,9 +8,10 @@
           "content": "Research for collision lib for threejs",
           "id": 1684618032963,
           "level": "default",
-          "done": false,
+          "done": true,
           "start": 1684618032963,
-          "focus": false
+          "focus": false,
+          "end": 1685692955838
         }
       },
       {
@@ -32,8 +33,10 @@
           "content": "Plan room distribution",
           "id": 1684618069629,
           "level": "default",
-          "done": false,
-          "start": 1684618069629
+          "done": true,
+          "start": 1684618069629,
+          "focus": false,
+          "end": 1685692953286
         }
       },
       {
@@ -70,8 +73,10 @@
           "content": "Fix issue of text manager throwing new text line threads even if its not ready yet",
           "id": 1684646560427,
           "level": "danger",
-          "done": false,
-          "start": 1684646560427
+          "done": true,
+          "start": 1684646560427,
+          "focus": false,
+          "end": 1685692972663
         }
       },
       {
@@ -81,8 +86,10 @@
           "content": "Place all room items",
           "id": 1684692601578,
           "level": "default",
-          "done": false,
-          "start": 1684692601578
+          "done": true,
+          "start": 1684692601578,
+          "focus": false,
+          "end": 1685692946430
         }
       },
       {
@@ -94,6 +101,28 @@
           "level": "default",
           "done": false,
           "start": 1684692613311
+        }
+      },
+      {
+        "key": 1685692975298,
+        "children": [],
+        "todo": {
+          "content": "Add dialog system",
+          "id": 1685692975298,
+          "level": "default",
+          "done": false,
+          "start": 1685692975298
+        }
+      },
+      {
+        "key": 1685692997152,
+        "children": [],
+        "todo": {
+          "content": "Add loading screen",
+          "id": 1685692997152,
+          "level": "default",
+          "done": false,
+          "start": 1685692997152
         }
       }
     ],
@@ -109,6 +138,6 @@
     "autoSort": false,
     "showEndTime": false,
     "lang": "en",
-    "version": "1684692673064"
+    "version": "1685693014677"
   }
 }

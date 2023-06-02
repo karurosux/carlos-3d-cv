@@ -2,8 +2,8 @@ import { KeyboardControls } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 import {
   Bloom,
-  EffectComposer,
   ChromaticAberration,
+  EffectComposer,
 } from "@react-three/postprocessing";
 import { Physics } from "@react-three/rapier";
 import { useEffect, useRef } from "react";
@@ -34,7 +34,6 @@ function App() {
           ]}
         >
           <Canvas camera={cameraRef.current}>
-            <fog attach="fog" args={["white", 0, 500]} />
             <color attach="background" args={["#2e1357"]} />
             <ambientLight color="#b69cff" intensity={0.08} />
             <Physics>
