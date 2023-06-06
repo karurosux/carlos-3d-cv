@@ -1,13 +1,7 @@
-import { Line, useAnimations, useKeyboardControls } from "@react-three/drei";
-import { useFrame, useLoader, useThree } from "@react-three/fiber";
+import { useAnimations, useKeyboardControls } from "@react-three/drei";
+import { useFrame, useLoader } from "@react-three/fiber";
 import { RapierRigidBody, RigidBody } from "@react-three/rapier";
-import {
-  forwardRef,
-  useEffect,
-  useImperativeHandle,
-  useRef,
-  useState,
-} from "react";
+import { forwardRef, useEffect, useImperativeHandle, useRef } from "react";
 import * as THREE from "three";
 import { AnimationAction, Mesh } from "three";
 import { GLTF, GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
@@ -19,7 +13,9 @@ type Props = {
 };
 
 export type CharaterRef = {
-  model: () => Mesh;
+  model: () => THREE.Group;
+  checkMovement: (delta: number) => void;
+  interact: () => void;
 };
 
 const Character = forwardRef<CharaterRef, Props>(function Character(
@@ -31,54 +27,28 @@ const Character = forwardRef<CharaterRef, Props>(function Character(
   const currentAnimation = useRef<AnimationAction>();
   const gltf: GLTF = useLoader(GLTFLoader, "models/character.gltf");
   const { ref, actions, mixer } = useAnimations(gltf.animations);
-  const [subscribeKey, getKeys] = useKeyboardControls();
-  const { raycaster, scene } = useThree();
-  const [line, setLine] = useState<THREE.Vector3[]>([]);
+  const [_, getKeys] = useKeyboardControls();
 
   useImperativeHandle(externalRef, () => ({
-    model: () => gltf.scene as any,
+    model: () => gltf.scene,
+    checkMovement,
+    interact,
   }));
 
   useEffect(() => {
     actions.idle_loop.timeScale = 0.5;
     actions.idle_loop.play();
     currentAnimation.current = actions.idle_loop;
-
-    subscribeKey(
-      (state) => state.interact,
-      (down) => {
-        if (!down) {
-          return;
-        }
-        setLine(getRayTraceCoords());
-        interact();
-      }
-    );
   }, []);
 
   useFrame(({ camera }, delta) => {
     cameraFollow(camera as THREE.PerspectiveCamera, delta);
-    checkMovement(delta);
     checkForRespawn();
     mixer.update(delta);
   });
 
-  return (
-    <RigidBody
-      ref={bodyRef}
-      colliders={"cuboid"}
-      gravityScale={1}
-      lockRotations
-    >
-      {line.length && <Line color="red" lineWidth={1} points={line} />}
-      <mesh ref={ref as any}>
-        <primitive object={gltf.scene} />
-      </mesh>
-    </RigidBody>
-  );
-
   function checkForRespawn() {
-    if (bodyRef.current.translation().y < -5) {
+    if (bodyRef.current?.translation?.()?.y < -5) {
       bodyRef.current.setTranslation({ x: 0, y: 0, z: 0 }, true);
     }
   }
@@ -178,43 +148,22 @@ const Character = forwardRef<CharaterRef, Props>(function Character(
   }
 
   function interact() {
-    const [origin, target] = getRayTraceCoords();
-    raycaster.set(origin, target);
-
-    const interactables = [
-      scene.getObjectByName("radio"),
-      scene.getObjectByName("desk"),
-    ];
-    raycaster.params.Line = {
-      threshold: 1,
-    };
-
-    const intersection = raycaster.intersectObjects(interactables);
-
-    console.log("intersect ", intersection);
+    // TODO: Do interaction
+    console.log("interact");
   }
 
-  function getRayTraceCoords() {
-    if (!getModel()) {
-      return [];
-    }
-
-    const currentPosition = new THREE.Vector3();
-    getModel().getWorldPosition(currentPosition);
-    const forwardVector = new THREE.Vector3();
-    getModel().children[0].getWorldDirection(forwardVector);
-
-    const origin = forwardVector.clone().normalize().multiplyScalar(0.1);
-
-    const target = origin
-      .clone()
-      .add(forwardVector.clone().normalize().multiplyScalar(0.9));
-
-    origin.y = 0.2;
-    target.y = 0.2;
-
-    return [origin, target];
-  }
+  return (
+    <RigidBody
+      ref={bodyRef}
+      colliders={"cuboid"}
+      gravityScale={1}
+      lockRotations
+    >
+      <mesh ref={ref as any}>
+        <primitive object={gltf.scene} />
+      </mesh>
+    </RigidBody>
+  );
 });
 
 Character.defaultProps = {

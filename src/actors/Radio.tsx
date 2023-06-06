@@ -17,7 +17,7 @@ function Radio(props: Props) {
   const [subscribeKey] = useKeyboardControls();
 
   useFrame(() => {
-    if (bodyRef.current.translation().y < -5) {
+    if (bodyRef.current?.translation?.()?.y < -5) {
       bodyRef.current.setTranslation(
         {
           x: props.initialPositon.x,
