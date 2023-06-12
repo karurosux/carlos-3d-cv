@@ -6,7 +6,7 @@ import {
   EffectComposer,
 } from "@react-three/postprocessing";
 import { Physics } from "@react-three/rapier";
-import { useEffect, useRef, useState } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import Character, { CharaterRef } from "./actors/Character";
 import Room from "./actors/Room";
@@ -59,8 +59,10 @@ export function Game() {
       <color attach="background" args={["#2e1357"]} />
       <ambientLight color="#b69cff" intensity={0.08} />
       <Physics>
-        <Character ref={characterRef} cameraOffset={cameraOffset} />
-        <Room />
+        <Suspense fallback={null}>
+          <Character ref={characterRef} cameraOffset={cameraOffset} />
+          <Room />
+        </Suspense>
       </Physics>
       <EffectComposer>
         <Bloom luminanceThreshold={0} luminanceSmoothing={1.6} height={300} />

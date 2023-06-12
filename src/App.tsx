@@ -4,6 +4,7 @@ import * as THREE from "three";
 import { Game } from "./Game";
 import { InputsProvider } from "./InputsProvider";
 import { DialogBox } from "./ui/dialog-box/DialogBox";
+import { LoadingPage } from "./ui/loading-page/LoadingPage";
 
 function App() {
   const cameraRef = useRef<THREE.PerspectiveCamera>(
@@ -20,6 +21,7 @@ function App() {
         </Canvas>
       </InputsProvider>
       <DialogBox />
+      <LoadingPage />
     </div>
   );
 }
