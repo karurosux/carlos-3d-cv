@@ -68,7 +68,7 @@ export function Game() {
         <Bloom luminanceThreshold={0} luminanceSmoothing={1.6} height={300} />
         <ChromaticAberration
           radialModulation={true}
-          modulationOffset={0.1}
+          modulationOffset={0.4}
           offset={new THREE.Vector2(0.005, 0.005)}
         />
       </EffectComposer>

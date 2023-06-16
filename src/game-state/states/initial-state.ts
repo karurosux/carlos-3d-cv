@@ -10,6 +10,7 @@ export class InitialState extends GameStateBase {
       "Hey!",
       "Welcome to my personal website.",
       "My name is Carlos Gonzalez.",
+      "Feel free to explore my space.",
     ]);
   }
 
