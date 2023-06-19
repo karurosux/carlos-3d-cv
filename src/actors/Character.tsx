@@ -155,6 +155,7 @@ const Character = forwardRef<CharaterRef, Props>(function Character(
   return (
     <RigidBody
       ref={bodyRef}
+      shape="capsule"
       colliders={"cuboid"}
       gravityScale={1}
       lockRotations
