@@ -1,17 +1,14 @@
 import { DialogBoxController } from "../../ui/dialog-box/DialogBoxController";
+import { InteractionTextController } from "../../ui/interaction-text/InteractionTextController";
 import { GameStateBase } from "../game-state-base";
 import { PlayableState } from "./playable-state";
 
-export class InitialState extends GameStateBase {
+export class ShowDialogState extends GameStateBase<string[]> {
   init(): void {
+    InteractionTextController.showInteractionText(false);
     DialogBoxController.onAfterLastLine =
       this.afterLastTextLineHandle.bind(this);
-    DialogBoxController.setTextLines([
-      "Hey!",
-      "Welcome to my personal website.",
-      "My name is Carlos Gonzalez.",
-      "Feel free to explore my space.",
-    ]);
+    DialogBoxController.setTextLines(this.data);
   }
 
   action() {

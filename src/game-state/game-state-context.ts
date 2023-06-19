@@ -10,5 +10,5 @@ export interface GameStateContext {
     callback: (down: boolean) => void
   ) => void;
   setCameraOffset: (offset: THREE.Vector3) => void;
-  setGameState: (state: GameStateConstructor) => void;
+  setGameState: (state: GameStateConstructor, data?: any) => void;
 }

@@ -1,6 +1,14 @@
 import { useAnimations, useKeyboardControls } from "@react-three/drei";
 import { useFrame, useLoader } from "@react-three/fiber";
-import { RapierRigidBody, RigidBody } from "@react-three/rapier";
+import {
+  CapsuleCollider,
+  CuboidCollider,
+  IntersectionEnterPayload,
+  IntersectionExitPayload,
+  RapierRigidBody,
+  RigidBody,
+  quat,
+} from "@react-three/rapier";
 import { forwardRef, useEffect, useImperativeHandle, useRef } from "react";
 import * as THREE from "three";
 import { AnimationAction, Mesh } from "three";
@@ -16,6 +24,7 @@ export type CharaterRef = {
   model: () => THREE.Group;
   checkMovement: (delta: number) => void;
   interact: () => void;
+  colliding: () => THREE.Object3D;
 };
 
 const Character = forwardRef<CharaterRef, Props>(function Character(
@@ -25,12 +34,14 @@ const Character = forwardRef<CharaterRef, Props>(function Character(
   const bodyRef = useRef<RapierRigidBody>(null);
   const cameraPosition = useRef<THREE.Vector3>(new THREE.Vector3(0, 0, 0));
   const currentAnimation = useRef<AnimationAction>();
+  const collidingRef = useRef<THREE.Object3D>();
   const gltf: GLTF = useLoader(GLTFLoader, "models/character.gltf");
   const { ref, actions, mixer } = useAnimations(gltf.animations);
   const [_, getKeys] = useKeyboardControls();
 
   useImperativeHandle(externalRef, () => ({
     model: () => gltf.scene,
+    colliding: () => collidingRef.current,
     checkMovement,
     interact,
   }));
@@ -118,33 +129,34 @@ const Character = forwardRef<CharaterRef, Props>(function Character(
   }
 
   function rotate(x: number, z: number, delta: number) {
-    if (x === 0 && z === 0) {
+    if ((x === 0 && z === 0) || !bodyRef.current) {
       return;
     }
-    const model = getModel();
-    const currentQuaternion = model.children[0].quaternion
-      .clone()
-      .setFromEuler(model.children[0].rotation);
-    currentQuaternion.x = 0;
-    currentQuaternion.z = 0;
-
-    const targetEuler = model.children[0].rotation.clone();
-    targetEuler.x = 0;
-    targetEuler.z = 0;
-    targetEuler.y = THREE.MathUtils.degToRad(
+    const targetYaw = THREE.MathUtils.degToRad(
       (Math.atan2(-z, x) * 180) / Math.PI + 90
     );
-    const targetQuaternion = currentQuaternion
-      .clone()
-      .setFromEuler(targetEuler);
-    const newQuaternion = currentQuaternion
-      .clone()
-      .slerp(targetQuaternion, 15 * delta);
-    const newEuler = model.children[0].rotation
-      .clone()
-      .setFromQuaternion(newQuaternion);
+    const currentQuat = quat(bodyRef.current.rotation());
+    const targetQuat = quat(bodyRef.current.rotation());
+    targetQuat.setFromAxisAngle(new THREE.Vector3(0, 1, 0), targetYaw);
+    const newQuat = currentQuat.clone().slerp(targetQuat, 15 * delta);
 
-    model.children[0].setRotationFromEuler(newEuler);
+    bodyRef.current.setRotation(
+      {
+        x: newQuat.x,
+        y: newQuat.y,
+        z: newQuat.z,
+        w: newQuat.w,
+      },
+      true
+    );
+  }
+
+  function handleIntersectionEnter(payload: IntersectionEnterPayload) {
+    collidingRef.current = payload.colliderObject;
+  }
+
+  function handleIntersectionExit(_: IntersectionExitPayload) {
+    collidingRef.current = null;
   }
 
   function interact() {
@@ -153,17 +165,22 @@ const Character = forwardRef<CharaterRef, Props>(function Character(
   }
 
   return (
-    <RigidBody
-      ref={bodyRef}
-      shape="capsule"
-      colliders={"cuboid"}
-      gravityScale={1}
-      lockRotations
-    >
-      <mesh ref={ref as any}>
-        <primitive object={gltf.scene} />
-      </mesh>
-    </RigidBody>
+    <>
+      <RigidBody ref={bodyRef} colliders={false} gravityScale={1} lockRotations>
+        <CapsuleCollider args={[0.5, 0.4]} position={[0, 0.8, 0]} />
+        <mesh ref={ref as any}>
+          <primitive object={gltf.scene} />
+        </mesh>
+        <CuboidCollider
+          name="character-interactor"
+          args={[0.2, 0.6, 0.2]}
+          position={[0, 0.8, 0.6]}
+          sensor
+          onIntersectionEnter={handleIntersectionEnter}
+          onCollisionExit={handleIntersectionExit}
+        />
+      </RigidBody>
+    </>
   );
 });
 

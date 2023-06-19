@@ -15,7 +15,7 @@ import {
   GameStateConstructor,
 } from "./game-state/game-state-base";
 import { GameStateContext } from "./game-state/game-state-context";
-import { InitialState } from "./game-state/states/initial-state";
+import { ShowDialogState } from "./game-state/states/show-dialog-state";
 
 export function Game() {
   const characterRef = useRef<CharaterRef>(null);
@@ -24,7 +24,12 @@ export function Game() {
   const [subscribeKey, getKeys] = useKeyboardControls();
 
   useEffect(() => {
-    internalSetState(InitialState);
+    internalSetState(ShowDialogState, [
+      "Hey!",
+      "Welcome to my personal website.",
+      "My name is Carlos Gonzalez.",
+      "Feel free to explore my space.",
+    ]);
 
     return subscribeKey(
       (state) => state.interact,
@@ -41,15 +46,18 @@ export function Game() {
     gameStateRef?.current?.frame?.(state, delta, frame);
   });
 
-  function internalSetState(clazz: GameStateConstructor) {
+  function internalSetState(clazz: GameStateConstructor, data?: any) {
     gameStateRef?.current?.unmount?.();
-    const newState = new clazz({
-      character: characterRef.current,
-      subscribeKey,
-      getKeys,
-      setCameraOffset,
-      setGameState: internalSetState,
-    } as GameStateContext);
+    const newState = new clazz(
+      {
+        character: characterRef.current,
+        subscribeKey,
+        getKeys,
+        setCameraOffset,
+        setGameState: internalSetState,
+      } as GameStateContext,
+      data
+    );
     newState.init?.();
     gameStateRef.current = newState;
   }
