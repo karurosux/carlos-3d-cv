@@ -17,6 +17,9 @@ export class PlayableState extends GameStateBase {
         case "dialog":
           this.context.setGameState(ShowDialogState, interactableAction.lines);
           break;
+        case "callback":
+          interactableAction.callback(this.context);
+          break;
       }
     }
   }

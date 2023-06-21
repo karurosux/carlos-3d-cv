@@ -9,7 +9,7 @@ import { Physics } from "@react-three/rapier";
 import { Suspense, useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import Character, { CharaterRef } from "./actors/Character";
-import Room from "./actors/Room";
+import Room, { RoomRef } from "./actors/Room";
 import {
   GameStateBase,
   GameStateConstructor,
@@ -19,6 +19,7 @@ import { ShowDialogState } from "./game-state/states/show-dialog-state";
 
 export function Game() {
   const characterRef = useRef<CharaterRef>(null);
+  const roomRef = useRef<RoomRef>(null);
   const [cameraOffset, setCameraOffset] = useState(new THREE.Vector3(0, 2, 3));
   const gameStateRef = useRef<GameStateBase>();
   const [subscribeKey, getKeys] = useKeyboardControls();
@@ -51,6 +52,7 @@ export function Game() {
     const newState = new clazz(
       {
         character: characterRef.current,
+        room: roomRef.current,
         subscribeKey,
         getKeys,
         setCameraOffset,
@@ -69,7 +71,7 @@ export function Game() {
       <Physics>
         <Suspense fallback={null}>
           <Character ref={characterRef} cameraOffset={cameraOffset} />
-          <Room />
+          <Room ref={roomRef} />
         </Suspense>
       </Physics>
       <EffectComposer>

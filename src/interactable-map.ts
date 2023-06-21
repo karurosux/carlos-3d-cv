@@ -1,5 +1,7 @@
+import { GameStateContext } from "./game-state/game-state-context";
+
 export interface InteractableActionBase {
-  type: "dialog";
+  type: "dialog" | "callback";
 }
 
 export interface InteractableDialogAction extends InteractableActionBase {
@@ -7,9 +9,22 @@ export interface InteractableDialogAction extends InteractableActionBase {
   lines: string[];
 }
 
-export type InteractableAction = InteractableDialogAction;
+export interface InteractableCallbackAction extends InteractableActionBase {
+  type: "callback";
+  callback: (context: GameStateContext) => void;
+}
+
+export type InteractableAction =
+  | InteractableDialogAction
+  | InteractableCallbackAction;
 
 export const interactableMap: Record<string, InteractableAction> = {
+  "lamp-collider": {
+    type: "callback",
+    callback: (context) => {
+      context.room.toggleLight();
+    },
+  },
   "shelve-collider": {
     type: "dialog",
     lines: ["A lot of stuff here...", "This is my shelve."],

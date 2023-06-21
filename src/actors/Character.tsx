@@ -23,7 +23,6 @@ type Props = {
 export type CharaterRef = {
   model: () => THREE.Group;
   checkMovement: (delta: number) => void;
-  interact: () => void;
   colliding: () => THREE.Object3D;
 };
 
@@ -43,7 +42,6 @@ const Character = forwardRef<CharaterRef, Props>(function Character(
     model: () => gltf.scene,
     colliding: () => collidingRef.current,
     checkMovement,
-    interact,
   }));
 
   useEffect(() => {
@@ -159,11 +157,6 @@ const Character = forwardRef<CharaterRef, Props>(function Character(
     collidingRef.current = null;
   }
 
-  function interact() {
-    // TODO: Do interaction
-    console.log("interact");
-  }
-
   return (
     <>
       <RigidBody ref={bodyRef} colliders={false} gravityScale={1} lockRotations>
@@ -172,10 +165,10 @@ const Character = forwardRef<CharaterRef, Props>(function Character(
           <primitive object={gltf.scene} />
         </mesh>
         <CuboidCollider
-          name="character-interactor"
-          args={[0.2, 0.6, 0.2]}
-          position={[0, 0.8, 0.6]}
           sensor
+          name="character-interactor"
+          args={[0.2, 0.6, 0.1]}
+          position={[0, 0.6, 0.5]}
           onIntersectionEnter={handleIntersectionEnter}
           onCollisionExit={handleIntersectionExit}
         />
