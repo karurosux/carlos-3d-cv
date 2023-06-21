@@ -52,7 +52,7 @@ export function DialogBox() {
         </p>
       </div>
       <RiArrowDropDownFill className="fixed z-20 text-white sm:right-5 lg:bottom-20 sm:bottom-8 right-8 sm:text-5xl lg:text-8xl animate-pulse animate-bounce" />
-      {isMobile.any() && <span>This is mobile.</span>}
+      {isMobile.any() && <span className="fixed top-0 left-0 z-30 text-white">This is mobile.</span>}
     </>
   );
 }
