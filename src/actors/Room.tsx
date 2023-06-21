@@ -1,10 +1,17 @@
 import { MeshPhysicalMaterialProps, useLoader } from "@react-three/fiber";
 import { CuboidCollider, CylinderCollider } from "@react-three/rapier";
 import { kebabCase } from "lodash";
-import { forwardRef, useEffect, useImperativeHandle, useRef } from "react";
+import {
+  Suspense,
+  forwardRef,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+} from "react";
 import * as THREE from "three";
 import { GLTF, GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import Radio from "./Radio";
+import { useVideoTexture } from "@react-three/drei";
 
 export type RoomRef = {
   toggleLight: () => void;
@@ -49,6 +56,7 @@ const meshUpdateMap: Record<string, (mesh: THREE.Mesh) => void> = {
 const Room = forwardRef(function (_, ref) {
   const lightRef = useRef<THREE.PointLight>(null);
   const gltf: GLTF = useLoader(GLTFLoader, "models/room.glb");
+  const videoTexture = useVideoTexture("video/code.mp4");
 
   useImperativeHandle(ref, () => ({
     toggleLight,
@@ -112,6 +120,22 @@ const Room = forwardRef(function (_, ref) {
         rotation={[0, THREE.MathUtils.degToRad(-45), 0]}
       >
         <primitive object={gltf.scene} />
+        <mesh name="code-video">
+          <mesh
+            position={[-1.9, 0.5, 1.15]}
+            rotation={[0, THREE.MathUtils.degToRad(90), 0]}
+          >
+            <planeGeometry args={[1.2, 0.7]} />
+            <Suspense fallback={<meshBasicMaterial />}>
+              <meshBasicMaterial map={videoTexture} toneMapped={false} />
+            </Suspense>
+            <rectAreaLight
+              args={["white", 0.5, 0.5, 2]}
+              position={[0,0,0.8]}
+              rotation={[THREE.MathUtils.degToRad(-140), 0, 0]}
+            />
+          </mesh>
+        </mesh>
       </mesh>
       <Radio />
       <CuboidCollider
