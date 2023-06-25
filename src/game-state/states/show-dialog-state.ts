@@ -9,6 +9,7 @@ export class ShowDialogState extends GameStateBase<string[]> {
     DialogBoxController.onAfterLastLine =
       this.afterLastTextLineHandle.bind(this);
     DialogBoxController.setTextLines(this.data);
+    this.context.character?.startIdleAnim();
   }
 
   action() {

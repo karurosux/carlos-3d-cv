@@ -1,21 +1,21 @@
-import { useKeyboardControls } from "@react-three/drei";
-import { useFrame } from "@react-three/fiber";
+import {useKeyboardControls} from '@react-three/drei';
+import {useFrame} from '@react-three/fiber';
 import {
   Bloom,
   ChromaticAberration,
   EffectComposer,
-} from "@react-three/postprocessing";
-import { Physics } from "@react-three/rapier";
-import { Suspense, useEffect, useRef, useState } from "react";
-import * as THREE from "three";
-import Character, { CharaterRef } from "./actors/Character";
-import Room, { RoomRef } from "./actors/Room";
+} from '@react-three/postprocessing';
+import {Physics} from '@react-three/rapier';
+import {Suspense, useEffect, useRef, useState} from 'react';
+import * as THREE from 'three';
+import Character, {CharaterRef} from './actors/Character';
+import Room, {RoomRef} from './actors/Room';
 import {
   GameStateBase,
   GameStateConstructor,
-} from "./game-state/game-state-base";
-import { GameStateContext } from "./game-state/game-state-context";
-import { ShowDialogState } from "./game-state/states/show-dialog-state";
+} from './game-state/game-state-base';
+import {GameStateContext} from './game-state/game-state-context';
+import {ShowDialogState} from './game-state/states/show-dialog-state';
 
 export function Game() {
   const characterRef = useRef<CharaterRef>(null);
@@ -26,10 +26,10 @@ export function Game() {
 
   useEffect(() => {
     internalSetState(ShowDialogState, [
-      "Hey!",
-      "Welcome to my personal website.",
-      "My name is Carlos Gonzalez.",
-      "Feel free to explore my space.",
+      'Hey!',
+      'Welcome to my personal website.',
+      'My name is Carlos Gonzalez.',
+      'Feel free to explore my space.',
     ]);
 
     return subscribeKey(
@@ -66,7 +66,7 @@ export function Game() {
 
   return (
     <>
-      <color attach="background" args={["#2e1357"]} />
+      <color attach="background" args={['#2e1357']} />
       <ambientLight color="#b69cff" intensity={0.08} />
       <Physics>
         <Suspense fallback={null}>

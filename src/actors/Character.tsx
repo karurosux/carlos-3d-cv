@@ -23,6 +23,7 @@ type Props = {
 export type CharaterRef = {
   model: () => THREE.Group;
   checkMovement: (delta: number) => void;
+  startIdleAnim: () => void;
   colliding: () => THREE.Object3D;
 };
 
@@ -42,6 +43,7 @@ const Character = forwardRef<CharaterRef, Props>(function Character(
     model: () => gltf.scene,
     colliding: () => collidingRef.current,
     checkMovement,
+    startIdleAnim,
   }));
 
   useEffect(() => {
@@ -85,7 +87,7 @@ const Character = forwardRef<CharaterRef, Props>(function Character(
 
   function move(x: number, z: number, _: number) {
     if (x === 0 && z === 0) {
-      fadeAnimation(actions.idle_loop);
+      startIdleAnim();
       resetVelocity();
       return;
     }
@@ -106,6 +108,10 @@ const Character = forwardRef<CharaterRef, Props>(function Character(
       { x: 0, y: bodyRef.current.linvel().y, z: 0 },
       true
     );
+  }
+
+  function startIdleAnim() {
+    fadeAnimation(actions.idle_loop);
   }
 
   function getModel() {
