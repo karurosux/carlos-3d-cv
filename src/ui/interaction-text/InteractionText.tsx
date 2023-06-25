@@ -16,8 +16,8 @@ export function InteractionText() {
   }
 
   return (
-    <div className="fixed bottom-10 z-20 w-full flex justify-center">
-      <p className="uppercase flex text-lg text-white break-keep whitespace-nowrap animate-pulse">
+    <div className="fixed z-20 flex justify-center w-full bottom-10">
+      <p className="flex text-3xl text-white uppercase break-keep whitespace-nowrap animate-pulse">
         Press&nbsp;
         <RiSpace className="mt-2" />
         &nbsp;to interact
