@@ -16,6 +16,7 @@ import {
 } from './game-state/game-state-base';
 import {GameStateContext} from './game-state/game-state-context';
 import {ShowDialogState} from './game-state/states/show-dialog-state';
+import {AudioEffects} from './utils/audio-effects';
 
 export function Game() {
   const characterRef = useRef<CharaterRef>(null);
@@ -31,6 +32,8 @@ export function Game() {
       'My name is Carlos Gonzalez.',
       'Feel free to explore my space.',
     ]);
+
+    AudioEffects.initializeAudios();
 
     return subscribeKey(
       (state) => state.interact,

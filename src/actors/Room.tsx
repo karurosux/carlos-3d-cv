@@ -1,26 +1,27 @@
-import { MeshPhysicalMaterialProps, useLoader } from "@react-three/fiber";
-import { CuboidCollider, CylinderCollider } from "@react-three/rapier";
-import { kebabCase } from "lodash";
+import {MeshPhysicalMaterialProps, useLoader} from '@react-three/fiber';
+import {CuboidCollider, CylinderCollider} from '@react-three/rapier';
+import {kebabCase} from 'lodash';
 import {
   Suspense,
   forwardRef,
   useEffect,
   useImperativeHandle,
   useRef,
-} from "react";
-import * as THREE from "three";
-import { GLTF, GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
-import Radio from "./Radio";
-import { useVideoTexture } from "@react-three/drei";
+} from 'react';
+import * as THREE from 'three';
+import {GLTF, GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader.js';
+import Radio from './Radio';
+import {useVideoTexture} from '@react-three/drei';
+import {AudioEffects} from '../utils/audio-effects';
 
 export type RoomRef = {
   toggleLight: () => void;
 };
 
 const meshUpdateMap: Record<string, (mesh: THREE.Mesh) => void> = {
-  "lamp-cover": (cover) => {
+  'lamp-cover': (cover) => {
     const material = cover.material as MeshPhysicalMaterialProps;
-    material.emissive = new THREE.Color("#ffffff");
+    material.emissive = new THREE.Color('#ffffff');
     material.emissiveIntensity = 10;
   },
   wall: (wall) => {
@@ -38,7 +39,7 @@ const meshUpdateMap: Record<string, (mesh: THREE.Mesh) => void> = {
     material.clearcoat = 1;
     material.clearcoatRoughness = 0;
   },
-  "thrash-pin": (thrash) => {
+  'thrash-pin': (thrash) => {
     const material = thrash.material as MeshPhysicalMaterialProps;
     material.metalness = 0.7;
     material.roughness = 0.3;
@@ -55,8 +56,8 @@ const meshUpdateMap: Record<string, (mesh: THREE.Mesh) => void> = {
 
 const Room = forwardRef(function (_, ref) {
   const lightRef = useRef<THREE.PointLight>(null);
-  const gltf: GLTF = useLoader(GLTFLoader, "models/room.glb");
-  const videoTexture = useVideoTexture("video/code.mp4");
+  const gltf: GLTF = useLoader(GLTFLoader, 'models/room.glb');
+  const videoTexture = useVideoTexture('video/code.mp4');
 
   useImperativeHandle(ref, () => ({
     toggleLight,
@@ -64,7 +65,7 @@ const Room = forwardRef(function (_, ref) {
 
   useEffect(() => {
     gltf.scene.traverse((obj) => {
-      if (obj.type === "Mesh") {
+      if (obj.type === 'Mesh') {
         const mesh = obj as THREE.Mesh;
         const name = kebabCase(obj.name);
         const updateFunction = meshUpdateMap[name];
@@ -78,13 +79,14 @@ const Room = forwardRef(function (_, ref) {
   function toggleLight() {
     const isOff = lightRef.current.intensity === 0;
     gltf.scene.traverse((obj) => {
-      if (kebabCase(obj.name) === "lamp-cover") {
+      if (kebabCase(obj.name) === 'lamp-cover') {
         const mesh = obj as THREE.Mesh;
         const material = mesh.material as MeshPhysicalMaterialProps;
         material.emissiveIntensity = isOff ? 10 : 0;
       }
     });
     lightRef.current.intensity = isOff ? 0.4 : 0;
+    AudioEffects.play('switch');
   }
 
   // Set properties here
@@ -130,8 +132,8 @@ const Room = forwardRef(function (_, ref) {
               <meshBasicMaterial map={videoTexture} toneMapped={false} />
             </Suspense>
             <rectAreaLight
-              args={["white", 0.5, 0.5, 2]}
-              position={[0,0,0.8]}
+              args={['white', 0.5, 0.5, 2]}
+              position={[0, 0, 0.8]}
               rotation={[THREE.MathUtils.degToRad(-140), 0, 0]}
             />
           </mesh>

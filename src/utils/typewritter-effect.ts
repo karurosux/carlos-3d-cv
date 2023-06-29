@@ -1,4 +1,4 @@
-export class Typewritter {
+export class TypewritterEffect {
   isTyping = false;
   speed = 30;
   i = 0;

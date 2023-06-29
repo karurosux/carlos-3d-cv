@@ -1,8 +1,9 @@
 import classNames from 'classnames';
 import {useEffect, useRef, useState} from 'react';
 import {RiArrowDropDownFill, RiSpace} from 'react-icons/ri';
-import {Typewritter} from '../../utils/typewritter-effect';
+import {TypewritterEffect} from '../../utils/typewritter-effect';
 import {DialogBoxController} from './DialogBoxController';
+import {AudioEffects} from '../../utils/audio-effects';
 
 export function DialogBox() {
   const divRef = useRef<HTMLDivElement>(null);
@@ -10,7 +11,7 @@ export function DialogBox() {
   const [textLines, setTextLines] = useState<string[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const typewritterRef = useRef(
-    new Typewritter((txt) => {
+    new TypewritterEffect((txt) => {
       divRef.current.innerHTML = txt;
     })
   );
@@ -30,10 +31,14 @@ export function DialogBox() {
     }
   }, [currentIndex, textLines]);
 
-  DialogBoxController.setTextLines = setTextLines;
+  DialogBoxController.setTextLines = (lines: string[]) => {
+    AudioEffects.play('beep');
+    setTextLines(lines);
+  };
   DialogBoxController.nextLine = next;
 
   function next() {
+    AudioEffects.play('beep');
     if (typewritterRef.current.isTyping) {
       // no continue if typing.
       typewritterRef.current.skip();

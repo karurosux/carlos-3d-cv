@@ -1,5 +1,5 @@
-import { useAnimations, useKeyboardControls } from "@react-three/drei";
-import { useFrame, useLoader } from "@react-three/fiber";
+import {useAnimations, useKeyboardControls} from '@react-three/drei';
+import {useFrame, useLoader} from '@react-three/fiber';
 import {
   CapsuleCollider,
   CuboidCollider,
@@ -8,11 +8,12 @@ import {
   RapierRigidBody,
   RigidBody,
   quat,
-} from "@react-three/rapier";
-import { forwardRef, useEffect, useImperativeHandle, useRef } from "react";
-import * as THREE from "three";
-import { AnimationAction, Mesh } from "three";
-import { GLTF, GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+} from '@react-three/rapier';
+import {forwardRef, useEffect, useImperativeHandle, useRef} from 'react';
+import * as THREE from 'three';
+import {AnimationAction, Mesh} from 'three';
+import {GLTF, GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
+import {RESPAWN_THRESHOLD} from '../constants';
 
 type Props = {
   movementSpeed?: number;
@@ -35,8 +36,8 @@ const Character = forwardRef<CharaterRef, Props>(function Character(
   const cameraPosition = useRef<THREE.Vector3>(new THREE.Vector3(0, 0, 0));
   const currentAnimation = useRef<AnimationAction>();
   const collidingRef = useRef<THREE.Object3D>();
-  const gltf: GLTF = useLoader(GLTFLoader, "models/character.gltf");
-  const { ref, actions, mixer } = useAnimations(gltf.animations);
+  const gltf: GLTF = useLoader(GLTFLoader, 'models/character.gltf');
+  const {ref, actions, mixer} = useAnimations(gltf.animations);
   const [_, getKeys] = useKeyboardControls();
 
   useImperativeHandle(externalRef, () => ({
@@ -52,15 +53,15 @@ const Character = forwardRef<CharaterRef, Props>(function Character(
     currentAnimation.current = actions.idle_loop;
   }, []);
 
-  useFrame(({ camera }, delta) => {
+  useFrame(({camera}, delta) => {
     cameraFollow(camera as THREE.PerspectiveCamera, delta);
     checkForRespawn();
     mixer.update(delta);
   });
 
   function checkForRespawn() {
-    if (bodyRef.current?.translation?.()?.y < -5) {
-      bodyRef.current.setTranslation({ x: 0, y: 0, z: 0 }, true);
+    if (bodyRef.current?.translation?.()?.y < RESPAWN_THRESHOLD) {
+      bodyRef.current.setTranslation({x: 0, y: 0, z: 0}, true);
     }
   }
 
@@ -78,7 +79,7 @@ const Character = forwardRef<CharaterRef, Props>(function Character(
   }
 
   function checkMovement(delta: number) {
-    const { forward, backward, left, right } = getKeys();
+    const {forward, backward, left, right} = getKeys();
     const xAxis = right ? 1 : left ? -1 : 0;
     const zAxis = forward ? -1 : backward ? 1 : 0;
     move(xAxis, zAxis, delta);
@@ -105,7 +106,7 @@ const Character = forwardRef<CharaterRef, Props>(function Character(
 
   function resetVelocity() {
     bodyRef.current.setLinvel(
-      { x: 0, y: bodyRef.current.linvel().y, z: 0 },
+      {x: 0, y: bodyRef.current.linvel().y, z: 0},
       true
     );
   }
