@@ -1,10 +1,5 @@
 import {useKeyboardControls} from '@react-three/drei';
 import {useFrame} from '@react-three/fiber';
-import {
-  Bloom,
-  ChromaticAberration,
-  EffectComposer,
-} from '@react-three/postprocessing';
 import {Physics} from '@react-three/rapier';
 import {Suspense, useEffect, useRef, useState} from 'react';
 import * as THREE from 'three';
@@ -77,14 +72,6 @@ export function Game() {
           <Room ref={roomRef} />
         </Suspense>
       </Physics>
-      <EffectComposer>
-        <Bloom luminanceThreshold={0} luminanceSmoothing={1.6} height={300} />
-        <ChromaticAberration
-          radialModulation={true}
-          modulationOffset={0.4}
-          offset={new THREE.Vector2(0.005, 0.005)}
-        />
-      </EffectComposer>
     </>
   );
 }

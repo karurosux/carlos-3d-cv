@@ -54,7 +54,6 @@ function Radio(props: Props) {
   return (
     <RigidBody ref={bodyRef} name="radio" position={props.initialPositon}>
       <rectAreaLight
-        castShadow
         rotation={[0, THREE.MathUtils.degToRad(180), 0]}
         position={[0, 0.2, 0.1]}
         args={['orange', 15, 0.4, 0.3]}

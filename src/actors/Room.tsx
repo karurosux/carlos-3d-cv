@@ -100,25 +100,20 @@ const Room = forwardRef(function (_, ref) {
         position={[0, 1, -2.6]}
         distance={8}
         color="orange"
-        castShadow
       />
       <pointLight
         position={[-2, 1, 0]}
         distance={5}
         color="blue"
         intensity={1}
-        castShadow
       />
       <pointLight
         position={[1.7, 0.2, -1.7]}
         distance={6}
         color="purple"
         intensity={5}
-        castShadow
       />
       <mesh
-        receiveShadow
-        castShadow
         rotation={[0, THREE.MathUtils.degToRad(-45), 0]}
       >
         <primitive object={gltf.scene} />
