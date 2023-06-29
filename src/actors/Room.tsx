@@ -119,10 +119,10 @@ const Room = forwardRef(function (_, ref) {
         <primitive object={gltf.scene} />
         <mesh name="code-video">
           <mesh
-            position={[-1.78, 0.55, 1.15]}
+            position={[-1.85, 0.5, 1.15]}
             rotation={[0, THREE.MathUtils.degToRad(90), 0]}
           >
-            <planeGeometry args={[1.1, 0.7]} />
+            <planeGeometry args={[1.1, 0.6]} />
             <Suspense fallback={<meshBasicMaterial />}>
               <meshBasicMaterial map={videoTexture} toneMapped={false} />
             </Suspense>
