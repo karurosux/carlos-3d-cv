@@ -1,13 +1,13 @@
+import {AdaptiveDpr, Preload} from '@react-three/drei';
 import {Canvas} from '@react-three/fiber';
 import {useRef} from 'react';
 import * as THREE from 'three';
 import {Game} from './Game';
 import {InputsProvider} from './InputsProvider';
-import {DialogBox} from './ui/dialog-box/DialogBox';
-import {LoadingPage} from './ui/loading-page/LoadingPage';
-import {InteractionText} from './ui/interaction-text/InteractionText';
 import {MobileButtons} from './ui/MobileButtons';
-import {AdaptiveDpr, Preload} from '@react-three/drei';
+import {DialogBox} from './ui/dialog-box/DialogBox';
+import {InteractionText} from './ui/interaction-text/InteractionText';
+import {LoadingPage} from './ui/loading-page/LoadingPage';
 
 function App() {
   const cameraRef = useRef<THREE.PerspectiveCamera>(
@@ -28,6 +28,7 @@ function App() {
       <DialogBox />
       <LoadingPage />
       <InteractionText />
+      {/* <ComputerMenu /> */}
       <MobileButtons />
     </div>
   );
