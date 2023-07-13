@@ -1,4 +1,3 @@
-import {useKeyboardControls} from '@react-three/drei';
 import {useFrame, useLoader} from '@react-three/fiber';
 import {RapierRigidBody, RigidBody} from '@react-three/rapier';
 import {useEffect, useRef} from 'react';
@@ -6,6 +5,7 @@ import * as THREE from 'three';
 import {GLTF, GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader.js';
 import Sound from '../utils/Sound';
 import {RESPAWN_THRESHOLD} from '../constants';
+import {useGameInputs} from '../utils/game-input-provider/use-game-inputs';
 
 type Props = {
   initialPositon: THREE.Vector3;
@@ -15,7 +15,7 @@ function Radio(props: Props) {
   const gltf: GLTF = useLoader(GLTFLoader, 'models/radio/scene.gltf');
   const audioRef = useRef<THREE.PositionalAudio>(null);
   const bodyRef = useRef<RapierRigidBody>(null);
-  const [subscribeKey] = useKeyboardControls();
+  const {subscribeKey} = useGameInputs();
 
   useFrame(() => {
     if (bodyRef.current?.translation?.()?.y < RESPAWN_THRESHOLD) {
@@ -31,25 +31,27 @@ function Radio(props: Props) {
     }
   });
 
-  useEffect(
-    () =>
-      subscribeKey(
-        (state) =>
-          state.forward ||
-          state.backward ||
-          state.left ||
-          state.right ||
-          state.interact,
-        (up) => {
-          if (up && audioRef.current && !audioRef.current?.isPlaying) {
-            audioRef.current.setVolume(0.8);
-            audioRef.current.setLoop(true);
-            audioRef.current.play();
-          }
+  useEffect(() => {
+    const unsubscribe = subscribeKey(
+      (input) =>
+        input.forward ||
+        input.backward ||
+        input.left ||
+        input.right ||
+        input.action,
+      () => {
+        if (audioRef.current && !audioRef.current?.isPlaying) {
+          audioRef.current.setVolume(0.8);
+          audioRef.current.setLoop(true);
+          audioRef.current.play();
         }
-      ),
-    [audioRef]
-  );
+      }
+    );
+
+    return () => {
+      unsubscribe();
+    };
+  }, [audioRef]);
 
   return (
     <RigidBody ref={bodyRef} name="radio" position={props.initialPositon}>

@@ -1,4 +1,4 @@
-import {useAnimations, useKeyboardControls} from '@react-three/drei';
+import {useAnimations} from '@react-three/drei';
 import {useFrame, useLoader} from '@react-three/fiber';
 import {
   CapsuleCollider,
@@ -14,6 +14,7 @@ import * as THREE from 'three';
 import {AnimationAction, Mesh} from 'three';
 import {GLTF, GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
 import {RESPAWN_THRESHOLD} from '../constants';
+import {useGameInputs} from '../utils/game-input-provider/use-game-inputs';
 
 type Props = {
   movementSpeed?: number;
@@ -38,7 +39,7 @@ const Character = forwardRef<CharaterRef, Props>(function Character(
   const collidingRef = useRef<THREE.Object3D>();
   const gltf: GLTF = useLoader(GLTFLoader, 'models/character.gltf');
   const {ref, actions, mixer} = useAnimations(gltf.animations);
-  const [_, getKeys] = useKeyboardControls();
+  const {getInput} = useGameInputs();
 
   useImperativeHandle(externalRef, () => ({
     model: () => gltf.scene,
@@ -79,7 +80,7 @@ const Character = forwardRef<CharaterRef, Props>(function Character(
   }
 
   function checkMovement(delta: number) {
-    const {forward, backward, left, right} = getKeys();
+    const {forward, backward, left, right} = getInput();
     const xAxis = right ? 1 : left ? -1 : 0;
     const zAxis = forward ? -1 : backward ? 1 : 0;
     move(xAxis, zAxis, delta);

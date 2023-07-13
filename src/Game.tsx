@@ -1,4 +1,3 @@
-import {useKeyboardControls} from '@react-three/drei';
 import {useFrame} from '@react-three/fiber';
 import {Physics} from '@react-three/rapier';
 import {Suspense, useEffect, useRef, useState} from 'react';
@@ -12,13 +11,14 @@ import {
 import {GameStateContext} from './game-state/game-state-context';
 import {ShowDialogState} from './game-state/states/show-dialog-state';
 import {AudioEffects} from './utils/audio-effects';
+import {useGameInputs} from './utils/game-input-provider/use-game-inputs';
 
 export function Game() {
   const characterRef = useRef<CharaterRef>(null);
   const roomRef = useRef<RoomRef>(null);
   const [cameraOffset, setCameraOffset] = useState(new THREE.Vector3(0, 2, 3));
   const gameStateRef = useRef<GameStateBase>();
-  const [subscribeKey, getKeys] = useKeyboardControls();
+  const {getInput, subscribeKey} = useGameInputs();
 
   useEffect(() => {
     internalSetState(ShowDialogState, [
@@ -30,15 +30,16 @@ export function Game() {
 
     AudioEffects.initializeAudios();
 
-    return subscribeKey(
-      (state) => state.interact,
-      (down) => {
-        if (!down) {
-          return;
-        }
+    const unsubscribe = subscribeKey(
+      (state) => state.action,
+      () => {
         gameStateRef.current?.action?.();
       }
     );
+
+    return () => {
+      unsubscribe();
+    };
   }, [gameStateRef]);
 
   useFrame((state, delta, frame) => {
@@ -52,7 +53,7 @@ export function Game() {
         character: characterRef.current,
         room: roomRef.current,
         subscribeKey,
-        getKeys,
+        getKeys: getInput,
         setCameraOffset,
         setGameState: internalSetState,
       } as GameStateContext,

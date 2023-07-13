@@ -3,11 +3,11 @@ import {Canvas} from '@react-three/fiber';
 import {useRef} from 'react';
 import * as THREE from 'three';
 import {Game} from './Game';
-import {InputsProvider} from './InputsProvider';
 import {MobileButtons} from './ui/MobileButtons';
 import {DialogBox} from './ui/dialog-box/DialogBox';
 import {InteractionText} from './ui/interaction-text/InteractionText';
 import {LoadingPage} from './ui/loading-page/LoadingPage';
+import {GameInputProvider} from './utils/game-input-provider/GameInputProvider';
 
 function App() {
   const cameraRef = useRef<THREE.PerspectiveCamera>(
@@ -18,18 +18,18 @@ function App() {
 
   return (
     <div className="w-screen h-screen">
-      <InputsProvider>
+      <GameInputProvider>
         <Canvas camera={cameraRef.current}>
           <Game />
           <Preload all />
           <AdaptiveDpr pixelated />
         </Canvas>
-      </InputsProvider>
-      <DialogBox />
-      <LoadingPage />
-      <InteractionText />
-      {/* <ComputerMenu /> */}
-      <MobileButtons />
+        <DialogBox />
+        <LoadingPage />
+        <InteractionText />
+        {/* <ComputerMenu /> */}
+        <MobileButtons />
+      </GameInputProvider>
     </div>
   );
 }
