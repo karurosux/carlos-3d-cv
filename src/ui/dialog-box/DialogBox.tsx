@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import {useEffect, useRef, useState} from 'react';
 import {RiArrowDropDownFill, RiSpace} from 'react-icons/ri';
 import {TypewritterEffect} from '../../utils/typewritter-effect';
-import {DialogBoxController} from './DialogBoxController';
+import {DialogBoxController} from './dialog-box-controller';
 
 export function DialogBox() {
   const divRef = useRef<HTMLDivElement>(null);

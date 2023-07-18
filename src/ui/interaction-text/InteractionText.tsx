@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { RiSpace } from "react-icons/ri";
-import { InteractionTextController } from "./InteractionTextController";
+import { InteractionTextController } from "./interaction-text-controller";
 
 export function InteractionText() {
   const [showInteractText, setShowInteractText] = useState(false);

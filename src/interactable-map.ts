@@ -1,7 +1,9 @@
+import { GameStateConstructor } from './game-state/game-state-constructor';
 import {GameStateContext} from './game-state/game-state-context';
+import {ShowComputerMenuState} from './game-state/states/show-computer-menu-state';
 
 export interface InteractableActionBase {
-  type: 'dialog' | 'callback';
+  type: 'dialog' | 'callback' | 'state';
 }
 
 export interface InteractableDialogAction extends InteractableActionBase {
@@ -14,9 +16,16 @@ export interface InteractableCallbackAction extends InteractableActionBase {
   callback: (context: GameStateContext) => void;
 }
 
+export interface InteractableStateAction {
+  type: 'state';
+  data: any;
+  state: GameStateConstructor;
+}
+
 export type InteractableAction =
   | InteractableDialogAction
-  | InteractableCallbackAction;
+  | InteractableCallbackAction
+  | InteractableStateAction;
 
 export const interactableMap: Record<string, InteractableAction> = {
   'lamp-collider': {
@@ -30,12 +39,9 @@ export const interactableMap: Record<string, InteractableAction> = {
     lines: ['A lot of stuff here...', 'This is my shelve.'],
   },
   'desktop-collider': {
-    type: 'dialog',
-    lines: [
-      'This is the place where I work...',
-      'All the magic happens here.',
-      'Including this space!',
-    ],
+    type: 'state',
+    state: ShowComputerMenuState,
+    data: ['Mmmm...', 'There is a menu on the screen.'],
   },
   'thrash-collider': {
     type: 'dialog',

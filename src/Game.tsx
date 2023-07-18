@@ -4,10 +4,8 @@ import {Suspense, useEffect, useRef, useState} from 'react';
 import * as THREE from 'three';
 import Character, {CharaterRef} from './actors/Character';
 import Room, {RoomRef} from './actors/Room';
-import {
-  GameStateBase,
-  GameStateConstructor,
-} from './game-state/game-state-base';
+import {GameStateBase} from './game-state/game-state-base';
+import {GameStateConstructor} from './game-state/game-state-constructor';
 import {GameStateContext} from './game-state/game-state-context';
 import {ShowDialogState} from './game-state/states/show-dialog-state';
 import {AudioEffects} from './utils/audio-effects';

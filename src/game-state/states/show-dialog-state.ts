@@ -1,28 +1,8 @@
-import { DialogBoxController } from "../../ui/dialog-box/DialogBoxController";
-import { InteractionTextController } from "../../ui/interaction-text/InteractionTextController";
-import { GameStateBase } from "../game-state-base";
-import { PlayableState } from "./playable-state";
+import {PlayableState} from './playable-state';
+import {ShowDialogBaseState} from './show-dialog-base-state';
 
-export class ShowDialogState extends GameStateBase<string[]> {
-  init(): void {
-    InteractionTextController.showInteractionText(false);
-    DialogBoxController.onAfterLastLine =
-      this.afterLastTextLineHandle.bind(this);
-    DialogBoxController.setTextLines(this.data);
-    this.context.character?.startIdleAnim();
-  }
-
-  action() {
-    DialogBoxController.nextLine();
-  }
-
-  unmount() {
-    DialogBoxController.onAfterLastLine = null;
-  }
-
-  frame(): void {}
-
-  afterLastTextLineHandle() {
+export class ShowDialogState extends ShowDialogBaseState {
+  afterLastTextLineHandle(): void {
     this.context.setGameState(PlayableState);
   }
 }

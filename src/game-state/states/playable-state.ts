@@ -1,9 +1,9 @@
-import { RootState } from "@react-three/fiber";
-import { GameStateBase } from "../game-state-base";
-import * as THREE from "three";
-import { InteractionTextController } from "../../ui/interaction-text/InteractionTextController";
-import { InteractableAction, interactableMap } from "../../interactable-map";
-import { ShowDialogState } from "./show-dialog-state";
+import {RootState} from '@react-three/fiber';
+import {GameStateBase} from '../game-state-base';
+import * as THREE from 'three';
+import {InteractionTextController} from '../../ui/interaction-text/interaction-text-controller';
+import {InteractableAction, interactableMap} from '../../interactable-map';
+import {ShowDialogState} from './show-dialog-state';
 
 export class PlayableState extends GameStateBase {
   init() {
@@ -14,10 +14,16 @@ export class PlayableState extends GameStateBase {
     const interactableAction = this.getInteractable();
     if (interactableAction) {
       switch (interactableAction.type) {
-        case "dialog":
+        case 'dialog':
           this.context.setGameState(ShowDialogState, interactableAction.lines);
           break;
-        case "callback":
+        case 'state':
+          this.context.setGameState(
+            interactableAction.state,
+            interactableAction.data
+          );
+          break;
+        case 'callback':
           interactableAction.callback(this.context);
           break;
       }

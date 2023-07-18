@@ -1,3 +1,3 @@
 export function Achievements() {
-  return <div>Achievements....</div>;
+  return <div>Achievements</div>;
 }
