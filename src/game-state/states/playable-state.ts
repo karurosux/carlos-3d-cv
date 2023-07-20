@@ -1,8 +1,8 @@
 import {RootState} from '@react-three/fiber';
-import {GameStateBase} from '../game-state-base';
 import * as THREE from 'three';
-import {InteractionTextController} from '../../ui/interaction-text/interaction-text-controller';
 import {InteractableAction, interactableMap} from '../../interactable-map';
+import {InteractionTextController} from '../../ui/interaction-text/interaction-text-controller';
+import {GameStateBase} from '../game-state-base';
 import {ShowDialogState} from './show-dialog-state';
 
 export class PlayableState extends GameStateBase {

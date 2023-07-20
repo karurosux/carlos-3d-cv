@@ -18,8 +18,10 @@ export function GameInputProvider(props: PropsWithChildren) {
 
   useEffect(() => {
     const keypressCallbackFactory = (val: boolean) => (evt: KeyboardEvent) => {
-      console.log(evt);
       switch (evt.code) {
+        case 'Space':
+          gameInputRef.current.action = val;
+          break;
         case 'ArrowUp':
         case 'KeyW':
           gameInputRef.current.forward = val;
@@ -38,10 +40,6 @@ export function GameInputProvider(props: PropsWithChildren) {
         case 'ArrowRight':
         case 'KeyD':
           gameInputRef.current.right = val;
-          break;
-
-        case 'Space':
-          gameInputRef.current.action = val;
           break;
       }
     };
