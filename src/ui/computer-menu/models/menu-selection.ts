@@ -1,6 +1,6 @@
 export enum MenuSelection {
   General = 'general',
   JobHistory = 'job-history',
-  Achievements = 'achievements',
+  Contact = 'contact',
   Exit = 'exit',
 }

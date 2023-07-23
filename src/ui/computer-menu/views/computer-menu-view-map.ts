@@ -1,5 +1,5 @@
 import {MenuSelection} from '../models/menu-selection';
-import {Achievements} from './Achievements';
+import {Contact} from './Contact';
 import {GeneralInformation} from './GeneralInformation';
 import {JobHistory} from './JobHistory';
 
@@ -8,5 +8,5 @@ export const computerMenuViewMap: Partial<
 > = {
   general: GeneralInformation,
   'job-history': JobHistory,
-  achievements: Achievements,
+  contact: Contact,
 };

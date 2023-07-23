@@ -80,8 +80,8 @@ export function ComputerMenu() {
       value: MenuSelection.JobHistory,
     },
     {
-      label: 'Achievements',
-      value: MenuSelection.Achievements,
+      label: 'Contact',
+      value: MenuSelection.Contact,
     },
     {
       label: 'Exit',
@@ -102,7 +102,7 @@ export function ComputerMenu() {
   return (
     <div className="fixed top-0 bottom-0 left-0 right-0 z-30 flex items-center justify-center">
       <div className="container flex flex-1 h-[80%]">
-        <UIBox className="flex-1 text-white computer-menu-wrapper">
+        <UIBox className="flex-1 text-white computer-menu-wrapper min-w-[350px]">
           <ul className="menu-options [&>li]:my-4 [&>li]:p-2 [&>li]:text-center [&>li.selected]:bg-white [&>li.selected]:text-black">
             {menuOptions.map((option) => (
               <li
