@@ -8,7 +8,6 @@ import {DialogBox} from './ui/dialog-box/DialogBox';
 import {InteractionText} from './ui/interaction-text/InteractionText';
 import {LoadingPage} from './ui/loading-page/LoadingPage';
 import {GameInputProvider} from './utils/game-input-provider/GameInputProvider';
-import { ComputerMenu } from './ui/computer-menu/ComputerMenu';
 
 function App() {
   const cameraRef = useRef<THREE.PerspectiveCamera>(
@@ -24,11 +23,12 @@ function App() {
           <Game />
           <Preload all />
           <AdaptiveDpr pixelated />
+          {/* <Environment preset="warehouse" /> */}
         </Canvas>
         <DialogBox />
         <LoadingPage />
         <InteractionText />
-        <ComputerMenu />
+        {/* <ComputerMenu /> */}
         <MobileButtons />
       </GameInputProvider>
     </div>

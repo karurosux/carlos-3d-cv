@@ -1,66 +1,26 @@
 import {MeshPhysicalMaterialProps, useLoader} from '@react-three/fiber';
 import {CuboidCollider, CylinderCollider} from '@react-three/rapier';
 import {kebabCase} from 'lodash';
-import {
-  Suspense,
-  forwardRef,
-  useEffect,
-  useImperativeHandle,
-  useRef,
-} from 'react';
+import {forwardRef, useEffect, useImperativeHandle, useRef} from 'react';
 import * as THREE from 'three';
 import {GLTF, GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader.js';
-import Radio from './Radio';
-import {useVideoTexture} from '@react-three/drei';
+import {ComputerMenu} from '../ui/computer-menu/ComputerMenu';
 import {AudioEffects} from '../utils/audio-effects';
+import Radio from './Radio';
 
 export type RoomRef = {
   toggleLight: () => void;
-};
-
-const meshUpdateMap: Record<string, (mesh: THREE.Mesh) => void> = {
-  'lamp-cover': (cover) => {
-    const material = cover.material as MeshPhysicalMaterialProps;
-    material.emissive = new THREE.Color('#ffffff');
-    material.emissiveIntensity = 10;
-  },
-  wall: (wall) => {
-    const material = wall.material as MeshPhysicalMaterialProps;
-    material.roughness = 1;
-  },
-  door: (door) => {
-    const material = door.material as MeshPhysicalMaterialProps;
-    material.roughness = 1;
-  },
-  floor: (floor) => {
-    const material = floor.material as MeshPhysicalMaterialProps;
-    material.roughness = 0.1;
-    material.specularIntensity = 0.5;
-    material.clearcoat = 1;
-    material.clearcoatRoughness = 0;
-  },
-  'thrash-pin': (thrash) => {
-    const material = thrash.material as MeshPhysicalMaterialProps;
-    material.metalness = 0.7;
-    material.roughness = 0.3;
-  },
-  window: (wdw) => {
-    const material = wdw.material as MeshPhysicalMaterialProps;
-    material.roughness = 0.1;
-  },
-  shelve: (shelve) => {
-    const material = shelve.material as MeshPhysicalMaterialProps;
-    material.roughness = 0.7;
-  },
+  findRoomObject: (name: string) => THREE.Object3D;
 };
 
 const Room = forwardRef(function (_, ref) {
+  const monitorRef = useRef<THREE.Object3D>(null);
   const lightRef = useRef<THREE.PointLight>(null);
   const gltf: GLTF = useLoader(GLTFLoader, 'models/room.glb');
-  const videoTexture = useVideoTexture('video/code.mp4');
 
   useImperativeHandle(ref, () => ({
     toggleLight,
+    findRoomObject,
   }));
 
   useEffect(() => {
@@ -68,6 +28,7 @@ const Room = forwardRef(function (_, ref) {
       if (obj.type === 'Mesh') {
         const mesh = obj as THREE.Mesh;
         const name = kebabCase(obj.name);
+        console.log(name);
         const updateFunction = meshUpdateMap[name];
         if (updateFunction) {
           updateFunction(mesh);
@@ -75,6 +36,16 @@ const Room = forwardRef(function (_, ref) {
       }
     });
   }, []);
+
+  function findRoomObject(name: string) {
+    let result: THREE.Object3D;
+    gltf.scene.traverse((obj: THREE.Object3D) => {
+      if (kebabCase(obj.name) === kebabCase(name)) {
+        result = obj;
+      }
+    });
+    return result;
+  }
 
   function toggleLight() {
     const isOff = lightRef.current.intensity === 0;
@@ -88,6 +59,47 @@ const Room = forwardRef(function (_, ref) {
     lightRef.current.intensity = isOff ? 0.4 : 0;
     AudioEffects.play('switch');
   }
+
+  const meshUpdateMap: Record<string, (mesh: THREE.Mesh) => void> = {
+    'lamp-cover': (cover) => {
+      const material = cover.material as MeshPhysicalMaterialProps;
+      material.emissive = new THREE.Color('#ffffff');
+      material.emissiveIntensity = 10;
+    },
+    'wall-1': (wall) => {
+      const material = wall.material as MeshPhysicalMaterialProps;
+      material.roughness = 1;
+    },
+    door: (door) => {
+      const material = door.material as MeshPhysicalMaterialProps;
+      material.roughness = 1;
+    },
+    floor: (floor) => {
+      const material = floor.material as MeshPhysicalMaterialProps;
+      material.roughness = 0.1;
+      material.specularIntensity = 0.5;
+      material.clearcoat = 1;
+      material.clearcoatRoughness = 0;
+    },
+    'thrash-pin': (thrash) => {
+      const material = thrash.material as MeshPhysicalMaterialProps;
+      material.metalness = 0.7;
+      material.roughness = 0.3;
+    },
+    window: (wdw) => {
+      const material = wdw.material as MeshPhysicalMaterialProps;
+      material.roughness = 0.1;
+    },
+    shelve: (shelve) => {
+      const material = shelve.material as MeshPhysicalMaterialProps;
+      material.roughness = 0.7;
+    },
+    monitor: (monitor) => {
+      // Position of this will be used later
+      // to point camera at this.
+      monitorRef.current = monitor;
+    },
+  };
 
   // Set properties here
   gltf.scene.position.y = 0.2;
@@ -113,25 +125,14 @@ const Room = forwardRef(function (_, ref) {
         color="purple"
         intensity={5}
       />
-      <mesh
-        rotation={[0, THREE.MathUtils.degToRad(-45), 0]}
-      >
+      <mesh rotation={[0, THREE.MathUtils.degToRad(-45), 0]}>
         <primitive object={gltf.scene} />
-        <mesh name="code-video">
-          <mesh
-            position={[-1.85, 0.5, 1.15]}
-            rotation={[0, THREE.MathUtils.degToRad(90), 0]}
-          >
-            <planeGeometry args={[1.1, 0.6]} />
-            <Suspense fallback={<meshBasicMaterial />}>
-              <meshBasicMaterial map={videoTexture} toneMapped={false} />
-            </Suspense>
-            <rectAreaLight
-              args={['white', 0.5, 0.5, 2]}
-              position={[0, 0, 0.8]}
-              rotation={[THREE.MathUtils.degToRad(-140), 0, 0]}
-            />
-          </mesh>
+        <mesh
+          name="code-video"
+          position={[-1.85, 0.48, 1.115]}
+          rotation={[0, THREE.MathUtils.degToRad(90), 0]}
+        >
+          <ComputerMenu />
         </mesh>
       </mesh>
       <Radio />

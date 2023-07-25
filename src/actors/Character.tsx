@@ -26,6 +26,8 @@ export type CharaterRef = {
   model: () => THREE.Group;
   checkMovement: (delta: number) => void;
   startIdleAnim: () => void;
+  setTempCameraTarget: (obj: THREE.Object3D) => void;
+  setTempCameraOffset: (offset: THREE.Vector3) => void;
   colliding: () => THREE.Object3D;
 };
 
@@ -37,6 +39,8 @@ const Character = forwardRef<CharaterRef, Props>(function Character(
   const cameraPosition = useRef<THREE.Vector3>(new THREE.Vector3(0, 0, 0));
   const currentAnimation = useRef<AnimationAction>();
   const collidingRef = useRef<THREE.Object3D>();
+  const tempCameraTarget = useRef<THREE.Object3D>(null);
+  const tempCameraOffset = useRef<THREE.Vector3>(null);
   const gltf: GLTF = useLoader(GLTFLoader, 'models/character.gltf');
   const {ref, actions, mixer} = useAnimations(gltf.animations);
   const {getInput} = useGameInputs();
@@ -46,6 +50,8 @@ const Character = forwardRef<CharaterRef, Props>(function Character(
     colliding: () => collidingRef.current,
     checkMovement,
     startIdleAnim,
+    setTempCameraTarget,
+    setTempCameraOffset,
   }));
 
   useEffect(() => {
@@ -60,23 +66,43 @@ const Character = forwardRef<CharaterRef, Props>(function Character(
     mixer.update(delta);
   });
 
+  function setTempCameraTarget(obj: THREE.Object3D) {
+    tempCameraTarget.current = obj;
+  }
+
+  function setTempCameraOffset(offset: THREE.Vector3) {
+    tempCameraOffset.current = offset;
+  }
+
   function checkForRespawn() {
     if (bodyRef.current?.translation?.()?.y < RESPAWN_THRESHOLD) {
       bodyRef.current.setTranslation({x: 0, y: 0, z: 0}, true);
     }
   }
 
+  function getCameraOffset() {
+    return tempCameraOffset.current
+      ? tempCameraOffset.current
+      : props.cameraOffset;
+  }
+
   function cameraFollow(camera: THREE.PerspectiveCamera, delta: number) {
     const position = getModel().position.clone();
     getModel().getWorldPosition(position);
-    cameraPosition.current.copy(position.clone().add(props.cameraOffset));
+    cameraPosition.current.copy(position.clone().add(getCameraOffset()));
     camera.position.lerp(
       cameraPosition.current,
       props.cameraMovementSpeed * delta
     );
+
     camera.lookAt(position);
-    camera.rotation.y = 0;
-    camera.rotation.z = 0;
+
+    if (!tempCameraTarget.current) {
+      // If temporal target is set, then not lock these
+      // 2 axis.
+      camera.rotation.y = 0;
+      camera.rotation.z = 0;
+    }
   }
 
   function checkMovement(delta: number) {
@@ -117,7 +143,9 @@ const Character = forwardRef<CharaterRef, Props>(function Character(
   }
 
   function getModel() {
-    return ref.current as any as Mesh;
+    return tempCameraTarget.current
+      ? tempCameraTarget.current
+      : (ref.current as any as Mesh);
   }
 
   function fadeAnimation(next: AnimationAction) {
@@ -187,7 +215,7 @@ const Character = forwardRef<CharaterRef, Props>(function Character(
 
 Character.defaultProps = {
   movementSpeed: 1.5,
-  cameraMovementSpeed: 1.3,
+  cameraMovementSpeed: 4,
   cameraOffset: new THREE.Vector3(0, 6, 10),
 };
 

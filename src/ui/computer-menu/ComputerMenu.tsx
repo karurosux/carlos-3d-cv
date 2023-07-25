@@ -7,36 +7,43 @@ import {MenuOption} from './models/menu-option';
 import {MenuSelection} from './models/menu-selection';
 import {computerMenuViewMap} from './views/computer-menu-view-map';
 import {ComputerMenuManager} from './computer-menu-manager';
+import {Html} from '@react-three/drei';
 
 export function ComputerMenu() {
   const [selected, setSelected] = useState(MenuSelection.General);
-  const {subscribeKey} = useGameInputs();
-  const [visible, setVisible] = useState(false);
+  const gameInputs = useGameInputs();
+  const [active, setActive] = useState(false);
 
   useEffect(() => {
-    const upUnsubscribe = subscribeKey((input) => input.forward, handleMoveUp);
-    const downUnsubscribe = subscribeKey(
+    const upUnsubscribe = gameInputs?.subscribeKey(
+      (input) => input.forward,
+      handleMoveUp
+    );
+    const downUnsubscribe = gameInputs?.subscribeKey(
       (input) => input.backward,
       handleMoveDown
     );
-    const actionUnsubscribe = subscribeKey(
+    const actionUnsubscribe = gameInputs?.subscribeKey(
       (input) => input.action,
       handleActionPressed
     );
 
     return () => {
-      upUnsubscribe();
-      downUnsubscribe();
-      actionUnsubscribe();
+      upUnsubscribe?.();
+      downUnsubscribe?.();
+      actionUnsubscribe?.();
     };
-  }, [selected, setSelected]);
+  }, [selected, setSelected, active]);
 
   ComputerMenuManager.openComputerMenu = () => {
-    setVisible(true);
+    setActive(true);
     setSelected(menuOptions[0].value);
   };
 
   const move = (delta: number) => {
+    if (!active) {
+      return;
+    }
     const currentIndex = menuOptions.findIndex(
       (item) => item.value === selected
     );
@@ -76,6 +83,10 @@ export function ComputerMenu() {
       value: MenuSelection.General,
     },
     {
+      label: 'Education',
+      value: MenuSelection.Education,
+    },
+    {
       label: 'Job History',
       value: MenuSelection.JobHistory,
     },
@@ -87,7 +98,7 @@ export function ComputerMenu() {
       label: 'Exit',
       value: MenuSelection.Exit,
       action: () => {
-        setVisible(false);
+        setActive(false);
         ComputerMenuManager.onComputerMenuExit?.();
       },
     },
@@ -95,32 +106,37 @@ export function ComputerMenu() {
 
   const SelectedView = computerMenuViewMap[selected];
 
-  if (!visible) {
-    return <></>;
-  }
-
   return (
-    <div className="fixed top-0 bottom-0 left-0 right-0 z-30 flex items-center justify-center">
-      <div className="container flex flex-1 h-[80%]">
-        <UIBox className="flex-1 text-white computer-menu-wrapper min-w-[350px]">
-          <ul className="menu-options [&>li]:my-4 [&>li]:p-2 [&>li]:text-center [&>li.selected]:bg-white [&>li.selected]:text-black">
-            {menuOptions.map((option) => (
-              <li
-                key={option.value}
-                className={classNames('cursor-pointer', {
-                  selected: option.value === selected,
-                })}
-                onClick={handleOptionClick(option)}
-              >
-                {option.label}
-              </li>
-            ))}
-          </ul>
-        </UIBox>
-        <UIBox className="relative flex-grow ml-8 text-white computer-menu-wrapper">
-          {SelectedView && <SelectedView />}
-        </UIBox>
+    <Html
+      transform
+      wrapperClass="computer-screen"
+      distanceFactor={0.3}
+      position={[0, 0, 0]}
+    >
+      <div className="relative w-[1470px] h-[800px] p-4 bg-blue-700">
+        <div className="absolute top-0 bottom-0 z-30 flex items-center justify-center left-8 right-8">
+          <div className="container flex flex-1 h-[80%]">
+            <UIBox className="flex-1 text-white computer-menu-wrapper min-w-[350px]">
+              <ul className="menu-options [&>li]:my-4 [&>li]:p-2 [&>li]:text-center [&>li.selected]:bg-white [&>li.selected]:text-black">
+                {menuOptions.map((option) => (
+                  <li
+                    key={option.value}
+                    className={classNames('cursor-pointer', {
+                      selected: option.value === selected,
+                    })}
+                    onClick={handleOptionClick(option)}
+                  >
+                    {option.label}
+                  </li>
+                ))}
+              </ul>
+            </UIBox>
+            <UIBox className="relative flex-grow ml-8 text-white computer-menu-wrapper">
+              {SelectedView && <SelectedView />}
+            </UIBox>
+          </div>
+        </div>
       </div>
-    </div>
+    </Html>
   );
 }

@@ -22,18 +22,18 @@ export function LoadingPage() {
   return (
     <div
       className={classnNames([
-        "fixed transition-opacity flex justify-center items-center top-0 bottom-0 left-0 right-0 bg-gradient-to-b from-purple-800 to-blue-950 text-white p-6 z-20",
+        "fixed transition-opacity flex justify-center items-center top-0 bottom-0 left-0 right-0 bg-gradient-to-b from-purple-800 to-blue-950 text-white p-6 z-30",
         {
           "opacity-0": !loadingBarVisible,
           "opacity-100": loadingBarVisible,
         },
       ])}
     >
-      <div className="p-4 w-1/3">
-        <div className="text-center mb-4 text-5xl">{percentage}%</div>
+      <div className="w-1/3 p-4">
+        <div className="mb-4 text-5xl text-center">{percentage}%</div>
         <div id="loading-bar" className="w-full h-4">
           <div
-            className="bg-white h-full"
+            className="h-full bg-white"
             style={{ width: `${percentage}%` }}
           ></div>
         </div>
