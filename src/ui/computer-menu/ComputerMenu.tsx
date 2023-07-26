@@ -73,8 +73,9 @@ export function ComputerMenu() {
   const handleOptionClick = (menuOption: MenuOption) => () => {
     if (isFunction(menuOption.action)) {
       menuOption.action(menuOption.value);
+    } else {
+      setSelected(menuOption.value);
     }
-    setSelected(menuOption.value);
   };
 
   const menuOptions: MenuOption[] = [
@@ -99,6 +100,7 @@ export function ComputerMenu() {
       value: MenuSelection.Exit,
       action: () => {
         setActive(false);
+        setSelected(first(menuOptions).value);
         ComputerMenuManager.onComputerMenuExit?.();
       },
     },
@@ -109,11 +111,11 @@ export function ComputerMenu() {
   return (
     <Html
       transform
-      wrapperClass="computer-screen"
+      wrapperClass="computer-screen !z-0"
       distanceFactor={0.3}
-      position={[0, 0, 0]}
+      position={[0, -0.01, -0.08]}
     >
-      <div className="relative w-[1470px] h-[800px] p-4 bg-blue-700">
+      <div className="relative w-[1530px] h-[870px] p-4 bg-blue-700">
         <div className="absolute top-0 bottom-0 z-30 flex items-center justify-center left-8 right-8">
           <div className="container flex flex-1 h-[80%]">
             <UIBox className="flex-1 text-white computer-menu-wrapper min-w-[350px]">

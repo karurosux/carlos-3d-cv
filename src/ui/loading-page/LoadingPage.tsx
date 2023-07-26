@@ -1,14 +1,25 @@
-import { useProgress } from "@react-three/drei";
-import { useRef, useState } from "react";
-import classnNames from "classnames";
+import {useProgress} from '@react-three/drei';
+import {useEffect, useRef, useState} from 'react';
+import classnNames from 'classnames';
 
-const TOTAL_OBJECTS = 9;
+const TOTAL_OBJECTS = 10;
 const COMPLETE_PERCENTAGE = 100;
 
 export function LoadingPage() {
-  const { loaded } = useProgress();
+  const {loaded} = useProgress();
   const fadeOutTriggered = useRef(false);
   const [loadingBarVisible, setLoadingBarVisible] = useState(true);
+  const [viewCompleted, setViewCompleted] = useState(false);
+
+  useEffect(() => {
+    if (loadingBarVisible) {
+      return;
+    }
+
+    setTimeout(() => {
+      setViewCompleted(true);
+    }, 500);
+  }, [loadingBarVisible]);
 
   const percentage = Math.round((loaded / TOTAL_OBJECTS) * 100);
 
@@ -19,13 +30,18 @@ export function LoadingPage() {
     }, 1500);
   }
 
+  if (viewCompleted) {
+    // Nothing to show anymore.
+    return;
+  }
+
   return (
     <div
       className={classnNames([
-        "fixed transition-opacity flex justify-center items-center top-0 bottom-0 left-0 right-0 bg-gradient-to-b from-purple-800 to-blue-950 text-white p-6 z-30",
+        'fixed transition-opacity flex justify-center items-center top-0 bottom-0 left-0 right-0 bg-gradient-to-b from-purple-800 to-blue-950 text-white p-6 z-30',
         {
-          "opacity-0": !loadingBarVisible,
-          "opacity-100": loadingBarVisible,
+          'opacity-0': !loadingBarVisible,
+          'opacity-100': loadingBarVisible,
         },
       ])}
     >
@@ -34,7 +50,7 @@ export function LoadingPage() {
         <div id="loading-bar" className="w-full h-4">
           <div
             className="h-full bg-white"
-            style={{ width: `${percentage}%` }}
+            style={{width: `${percentage}%`}}
           ></div>
         </div>
       </div>

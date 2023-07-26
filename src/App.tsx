@@ -23,12 +23,10 @@ function App() {
           <Game />
           <Preload all />
           <AdaptiveDpr pixelated />
-          {/* <Environment preset="warehouse" /> */}
         </Canvas>
         <DialogBox />
         <LoadingPage />
         <InteractionText />
-        {/* <ComputerMenu /> */}
         <MobileButtons />
       </GameInputProvider>
     </div>
