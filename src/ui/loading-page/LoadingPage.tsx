@@ -2,7 +2,7 @@ import {useProgress} from '@react-three/drei';
 import {useEffect, useRef, useState} from 'react';
 import classnNames from 'classnames';
 
-const TOTAL_OBJECTS = 10;
+const TOTAL_OBJECTS = 23;
 const COMPLETE_PERCENTAGE = 100;
 
 export function LoadingPage() {

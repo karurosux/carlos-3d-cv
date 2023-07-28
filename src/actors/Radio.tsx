@@ -58,7 +58,7 @@ function Radio(props: Props) {
       <rectAreaLight
         rotation={[0, THREE.MathUtils.degToRad(180), 0]}
         position={[0, 0.2, 0.1]}
-        args={['orange', 15, 0.4, 0.3]}
+        args={['orange', 25, 0.4, 0.3]}
       />
       <Sound ref={audioRef} url="audio/bgmusic.flac" />
       <mesh scale={0.02}>

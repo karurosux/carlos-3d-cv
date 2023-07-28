@@ -7,6 +7,7 @@ import {GLTF, GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader.js';
 import {ComputerMenu} from '../ui/computer-menu/ComputerMenu';
 import {AudioEffects} from '../utils/audio-effects';
 import Radio from './Radio';
+import {ROOM_LAMP_INTENSITY} from '../constants';
 
 export type RoomRef = {
   toggleLight: () => void;
@@ -41,7 +42,7 @@ const Room = forwardRef(function (_, ref) {
         material.emissiveIntensity = isOff ? 10 : 0;
       }
     });
-    lightRef.current.intensity = isOff ? 0.4 : 0;
+    lightRef.current.intensity = isOff ? ROOM_LAMP_INTENSITY : 0;
     AudioEffects.play('switch');
   }
 
@@ -52,22 +53,10 @@ const Room = forwardRef(function (_, ref) {
     <>
       <pointLight
         ref={lightRef}
-        intensity={0.4}
+        intensity={ROOM_LAMP_INTENSITY}
         position={[0, 1, -2.6]}
         distance={8}
         color="orange"
-      />
-      <pointLight
-        position={[-2, 1, 0]}
-        distance={5}
-        color="blue"
-        intensity={1}
-      />
-      <pointLight
-        position={[1.7, 0.2, -1.7]}
-        distance={6}
-        color="purple"
-        intensity={5}
       />
       <mesh rotation={[0, THREE.MathUtils.degToRad(-45), 0]}>
         <primitive object={gltf.scene} />

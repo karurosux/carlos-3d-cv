@@ -64,9 +64,9 @@ export function Game() {
 
   return (
     <>
-      <color attach="background" args={['#2e1357']} />
-      {/* <ambientLight color="#b69cff" intensity={0.03} /> */}
-      <Environment background={false} preset="night" />
+      <color attach="background" args={['black']} />
+      <ambientLight color="#b69cff" intensity={0.3} />
+      <Environment preset="night" />
       <Physics>
         <Suspense fallback={null}>
           <Character ref={characterRef} cameraOffset={cameraOffset} />
