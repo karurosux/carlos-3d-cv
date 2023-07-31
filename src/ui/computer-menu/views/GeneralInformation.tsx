@@ -4,7 +4,7 @@ export function GeneralInformation() {
   return (
     <div className="h-full">
       <h3 className="mb-4 font-bold">General Information</h3>
-      <p>
+      <p className="text-4xl">
         <span className="inline-block mt-8">
           My name is{' '}
           <b>

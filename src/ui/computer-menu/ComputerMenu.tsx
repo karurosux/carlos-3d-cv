@@ -92,6 +92,10 @@ export function ComputerMenu() {
       value: MenuSelection.JobHistory,
     },
     {
+      label: 'Skills',
+      value: MenuSelection.Skills,
+    },
+    {
       label: 'Contact',
       value: MenuSelection.Contact,
     },
@@ -118,7 +122,7 @@ export function ComputerMenu() {
       <div className="relative w-[1530px] h-[870px] p-4 bg-blue-700">
         <div className="absolute top-0 bottom-0 z-30 flex items-center justify-center left-8 right-8">
           <div className="container flex flex-1 h-[80%]">
-            <UIBox className="flex-1 text-white computer-menu-wrapper min-w-[350px]">
+            <UIBox className="flex-1 text-white computer-menu-wrapper min-w-[350px] overflow-y-auto">
               <ul className="menu-options [&>li]:my-4 [&>li]:p-2 [&>li]:text-center [&>li.selected]:bg-white [&>li.selected]:text-black">
                 {menuOptions.map((option) => (
                   <li
@@ -133,7 +137,7 @@ export function ComputerMenu() {
                 ))}
               </ul>
             </UIBox>
-            <UIBox className="relative flex-grow ml-8 text-white computer-menu-wrapper">
+            <UIBox className="relative flex-grow ml-8 overflow-y-auto text-white computer-menu-wrapper">
               {SelectedView && <SelectedView />}
             </UIBox>
           </div>

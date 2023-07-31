@@ -38,7 +38,7 @@ export function LoadingPage() {
   return (
     <div
       className={classnNames([
-        'fixed transition-opacity flex justify-center items-center top-0 bottom-0 left-0 right-0 bg-gradient-to-b from-purple-800 to-blue-950 text-white p-6 z-30',
+        'fixed transition-opacity flex justify-center items-center top-0 bottom-0 left-0 right-0 bg-gradient-to-b from-black to-blue-950 text-white p-6 z-30',
         {
           'opacity-0': !loadingBarVisible,
           'opacity-100': loadingBarVisible,
