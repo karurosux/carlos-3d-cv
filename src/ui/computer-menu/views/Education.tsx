@@ -3,7 +3,7 @@ import {education} from '../../../constants/education';
 export function Education() {
   return (
     <div className="education">
-      <h3 className="mb-4 font-bold">Education</h3>
+      <h1 className="mb-4 font-bold">Education</h1>
       <div>
         <ul>
           {education.map((item) => (

@@ -22,8 +22,8 @@ export const jobHistory: JobHistory[] = [
   },
   {
     current: false,
-    company: 'Sonata Services',
-    website: 'https://sonataservices.com/',
+    company: 'Sonatafy',
+    website: 'https://sonatafy.com/',
     title: 'Javascript Developer',
     subtitle: null,
     startDate: moment('01/08/2017', 'DD/MM/YYYY').toDate(),

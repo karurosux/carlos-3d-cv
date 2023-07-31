@@ -4,7 +4,7 @@ export function Contact() {
   return (
     <div className="contact">
       <h3 className="mb-4 font-bold">Contact</h3>
-      <ul className="[&>li]:mt-8">
+      <ul className="[&>li]:mt-4 text-4xl [&>li]:border-b-2 [&>li]:border-dashed">
         <li>
           <b>Email:</b>{' '}
           <a href={`mailto:${ContactInformation.email}`}>
