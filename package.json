@@ -21,7 +21,8 @@
     "react-dom": "18.2.0",
     "react-icons": "^4.9.0",
     "remixicon": "^3.3.0",
-    "three": "0.152.2"
+    "three": "0.152.2",
+    "victory": "^36.6.11"
   },
   "devDependencies": {
     "@types/lodash": "^4.14.195",

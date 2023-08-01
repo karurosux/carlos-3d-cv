@@ -1,14 +1,26 @@
-export class Skills {
-  public static readonly languages = Object.freeze({
-    JavaScript: 110,
-    HTML: 110,
-    CSS: 110,
-    Dart: 80,
-    TypeScript: 90,
-    'C#': 70,
-    SQL: 70,
-    PHP: 60,
-  });
+export class SkillsData {
+  public static readonly languages: any[] = [
+    {
+      x: 'JavaScript',
+      y: 110,
+    },
+    {
+      x: 'HTML',
+      y: 110,
+    },
+    {
+      x: 'CSS',
+      y: 110,
+    },
+    {
+      x: 'TypeScript',
+      y: 110,
+    },
+    {
+      x: 'Java',
+      y: 60,
+    },
+  ];
   public static readonly technologies = [
     'NodeJs',
     'Express',
