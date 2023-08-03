@@ -1,5 +1,12 @@
 import {Environment} from '@react-three/drei';
 import {useFrame} from '@react-three/fiber';
+import {
+  Bloom,
+  ChromaticAberration,
+  EffectComposer,
+  Noise,
+  Vignette,
+} from '@react-three/postprocessing';
 import {Physics} from '@react-three/rapier';
 import {Suspense, useEffect, useRef, useState} from 'react';
 import * as THREE from 'three';
@@ -62,6 +69,8 @@ export function Game() {
     gameStateRef.current = newState;
   }
 
+  const postProcessingEnabled = window.location.search.includes('pp=true');
+
   return (
     <>
       <color attach="background" args={['black']} />
@@ -73,6 +82,22 @@ export function Game() {
           <Room ref={roomRef} />
         </Suspense>
       </Physics>
+      {postProcessingEnabled && (
+        <EffectComposer>
+          <Bloom
+            luminanceThreshold={0.5}
+            luminanceSmoothing={0.9}
+            height={100}
+          />
+          <Noise opacity={0.2} />
+          <Vignette eskil={false} offset={0.1} darkness={1.1} />
+          <ChromaticAberration
+            offset={new THREE.Vector2(0.0008, 0.0008)}
+            radialModulation={false}
+            modulationOffset={0}
+          />
+        </EffectComposer>
+      )}
     </>
   );
 }

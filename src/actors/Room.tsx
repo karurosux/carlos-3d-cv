@@ -65,6 +65,11 @@ const Room = forwardRef(function (_, ref) {
           position={[-1.85, 0.48, 1.115]}
           rotation={[0, THREE.MathUtils.degToRad(90), 0]}
         >
+          <rectAreaLight
+            args={['#64affa', 30, 1, 1]}
+            position={[0, 0, -0.1]}
+            rotation={[0, THREE.MathUtils.degToRad(180), 0]}
+          />
           <ComputerMenu />
         </mesh>
       </mesh>
