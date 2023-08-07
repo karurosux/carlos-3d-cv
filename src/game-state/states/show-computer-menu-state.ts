@@ -1,4 +1,5 @@
 import {ComputerMenuManager} from '../../ui/computer-menu/computer-menu-manager';
+import {AudioEffects} from '../../utils/audio-effects';
 import {PlayableState} from './playable-state';
 import {ShowDialogBaseState} from './show-dialog-base-state';
 import * as THREE from 'three';
@@ -24,5 +25,6 @@ export class ShowComputerMenuState extends ShowDialogBaseState {
       this.context.room.findRoomObject('monitor')
     );
     this.context.character.setTempCameraOffset(new THREE.Vector3(1, 0, 1));
+    AudioEffects.play('chairWheel');
   }
 }

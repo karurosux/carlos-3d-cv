@@ -1,6 +1,7 @@
-import { GameStateConstructor } from './game-state/game-state-constructor';
+import {GameStateConstructor} from './game-state/game-state-constructor';
 import {GameStateContext} from './game-state/game-state-context';
 import {ShowComputerMenuState} from './game-state/states/show-computer-menu-state';
+import {AudioEffects} from './utils/audio-effects';
 
 export interface InteractableActionBase {
   type: 'dialog' | 'callback' | 'state';
@@ -46,5 +47,11 @@ export const interactableMap: Record<string, InteractableAction> = {
   'thrash-collider': {
     type: 'dialog',
     lines: ['Just a bunch of monster cans and snack packages.'],
+  },
+  'left-wall-collider': {
+    type: 'callback',
+    callback: () => {
+      AudioEffects.play('lockedDoor');
+    },
   },
 };

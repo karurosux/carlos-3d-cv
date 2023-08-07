@@ -8,6 +8,7 @@ import {MenuSelection} from './models/menu-selection';
 import {computerMenuViewMap} from './views/computer-menu-view-map';
 import {ComputerMenuManager} from './computer-menu-manager';
 import {Html} from '@react-three/drei';
+import {AudioEffects} from '../../utils/audio-effects';
 
 export function ComputerMenu() {
   const [selected, setSelected] = useState(MenuSelection.General);
@@ -60,6 +61,8 @@ export function ComputerMenu() {
     }
 
     setSelected(menuOptions[newIndex].value);
+
+    AudioEffects.play('keycap');
   };
 
   const handleMoveUp = () => move(-1);
@@ -105,6 +108,7 @@ export function ComputerMenu() {
       action: () => {
         setActive(false);
         setSelected(first(menuOptions).value);
+        AudioEffects.play('keycap');
         ComputerMenuManager.onComputerMenuExit?.();
       },
     },

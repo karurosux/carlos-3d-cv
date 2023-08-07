@@ -3,6 +3,7 @@ import {useEffect, useRef, useState} from 'react';
 import {RiArrowDropDownFill, RiSpace} from 'react-icons/ri';
 import {TypewritterEffect} from '../../utils/typewritter-effect';
 import {DialogBoxController} from './dialog-box-controller';
+import {AudioEffects} from '../../utils/audio-effects';
 
 export function DialogBox() {
   const divRef = useRef<HTMLDivElement>(null);
@@ -16,6 +17,7 @@ export function DialogBox() {
   );
 
   useEffect(() => {
+    AudioEffects.play('keycap');
     setCurrentIndex(0);
   }, [textLines]);
 
@@ -36,6 +38,7 @@ export function DialogBox() {
   DialogBoxController.nextLine = next;
 
   function next() {
+    AudioEffects.play('keycap');
     if (typewritterRef.current.isTyping) {
       // no continue if typing.
       typewritterRef.current.skip();
