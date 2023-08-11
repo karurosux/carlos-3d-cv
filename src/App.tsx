@@ -8,6 +8,7 @@ import {DialogBox} from './ui/dialog-box/DialogBox';
 import {InteractionText} from './ui/interaction-text/InteractionText';
 import {LoadingPage} from './ui/loading-page/LoadingPage';
 import {GameInputProvider} from './utils/game-input-provider/GameInputProvider';
+import {ControlsOverlay} from './ui/controls-overlay/ControlsOVerlay';
 
 function App() {
   const cameraRef = useRef<THREE.PerspectiveCamera>(
@@ -28,6 +29,7 @@ function App() {
         <LoadingPage />
         <InteractionText />
         <MobileButtons />
+        <ControlsOverlay />
       </GameInputProvider>
     </div>
   );

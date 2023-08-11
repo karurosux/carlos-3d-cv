@@ -14,7 +14,7 @@ export class AudioEffects {
     audioEffects.keycap.volume = 0.6;
     audioEffects.switch.volume = 0.6;
     audioEffects.chairWheel.volume = 0.1;
-    audioEffects.lockedDoor.volume = 0.15;
+    audioEffects.lockedDoor.volume = 0.3;
   }
 
   static play(name: EffectName) {

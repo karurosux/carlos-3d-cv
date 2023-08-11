@@ -4,10 +4,10 @@ import {kebabCase} from 'lodash';
 import {forwardRef, useImperativeHandle, useRef} from 'react';
 import * as THREE from 'three';
 import {GLTF, GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader.js';
+import {ROOM_LAMP_INTENSITY} from '../constants';
 import {ComputerMenu} from '../ui/computer-menu/ComputerMenu';
 import {AudioEffects} from '../utils/audio-effects';
 import Radio from './Radio';
-import {ROOM_LAMP_INTENSITY} from '../constants';
 
 export type RoomRef = {
   toggleLight: () => void;

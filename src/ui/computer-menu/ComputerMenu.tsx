@@ -37,6 +37,9 @@ export function ComputerMenu() {
   }, [selected, setSelected, active]);
 
   ComputerMenuManager.openComputerMenu = () => {
+    if (active) {
+      return;
+    }
     setActive(true);
     setSelected(menuOptions[0].value);
   };
