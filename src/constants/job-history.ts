@@ -58,7 +58,7 @@ export const jobHistory: JobHistory[] = [
     startDate: moment('01/08/2017', 'DD/MM/YYYY').toDate(),
     endDate: moment('22/01/2019', 'DD/MM/YYYY').toDate(),
     projects: [
-      'Multiple trial applications.',
+      'Multiple clinical trial applications.',
       'Core components library.',
       'Application generator CLI tool, to generate different projects based on arguments.',
     ],

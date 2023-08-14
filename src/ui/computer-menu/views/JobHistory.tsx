@@ -38,6 +38,31 @@ export function JobHistory() {
                     {item.website}
                   </a>
                 </li>
+                <li>
+                  <h2 className="py-2 my-2 border-2 border-t-0 border-l-0 border-r-0 border-dashed">
+                    Projects
+                  </h2>
+                  <ul className="pl-8 list-disc">
+                    {item.projects.map((project) => (
+                      <li key={project}>{project}</li>
+                    ))}
+                  </ul>
+                </li>
+                <li>
+                  <h2 className="py-2 my-2 border-2 border-t-0 border-l-0 border-r-0 border-dashed">
+                    Technologies
+                  </h2>
+                  <ul className="pt-4">
+                    {item.technologies.map((item) => (
+                      <li
+                        key={item}
+                        className="inline-block p-4 m-2 text-4xl border-4 border-dashed rounded-full"
+                      >
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </li>
               </ul>
             </li>
           ))}
