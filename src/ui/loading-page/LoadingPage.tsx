@@ -3,7 +3,7 @@ import {useEffect, useRef, useState} from 'react';
 import classnNames from 'classnames';
 import {AudioEffects} from '../../utils/audio-effects';
 
-const TOTAL_OBJECTS = 23;
+const TOTAL_OBJECTS = 24;
 const COMPLETE_PERCENTAGE = 100;
 
 export function LoadingPage() {

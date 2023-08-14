@@ -12,12 +12,6 @@ export function Contact() {
           </a>
         </li>
         <li>
-          <b>Email:</b>{' '}
-          <a href={`mailto:${ContactInformation.email}`}>
-            {ContactInformation.email}
-          </a>
-        </li>
-        <li>
           <b>Github:</b>{' '}
           <a href={ContactInformation.github} target="_blank">
             {ContactInformation.github}

@@ -98,10 +98,6 @@ export function ComputerMenu() {
       value: MenuSelection.JobHistory,
     },
     {
-      label: 'Skills',
-      value: MenuSelection.Skills,
-    },
-    {
       label: 'Contact',
       value: MenuSelection.Contact,
     },
