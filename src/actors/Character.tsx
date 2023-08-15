@@ -36,7 +36,7 @@ const Character = forwardRef<CharaterRef, Props>(function Character(
   externalRef
 ) {
   const bodyRef = useRef<RapierRigidBody>(null);
-  const cameraPosition = useRef<THREE.Vector3>(new THREE.Vector3(0, 0, 0));
+  const cameraPosition = useRef<THREE.Vector3>(new THREE.Vector3(0, 0, 8));
   const currentAnimation = useRef<AnimationAction>();
   const collidingRef = useRef<THREE.Object3D>();
   const tempCameraTarget = useRef<THREE.Object3D>(null);
@@ -90,10 +90,13 @@ const Character = forwardRef<CharaterRef, Props>(function Character(
     const position = getModel().position.clone();
     getModel().getWorldPosition(position);
     cameraPosition.current.copy(position.clone().add(getCameraOffset()));
-    camera.position.lerp(
-      cameraPosition.current,
-      props.cameraMovementSpeed * delta
-    );
+
+    // if (camera.position.z >= 0) {
+      camera.position.lerp(
+        cameraPosition.current,
+        props.cameraMovementSpeed * delta
+      );
+    // }
 
     camera.lookAt(position);
 

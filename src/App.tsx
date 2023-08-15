@@ -1,6 +1,6 @@
 import {AdaptiveDpr, Preload} from '@react-three/drei';
 import {Canvas} from '@react-three/fiber';
-import {useRef} from 'react';
+import {useEffect, useRef} from 'react';
 import * as THREE from 'three';
 import {Game} from './Game';
 import {MobileButtons} from './ui/MobileButtons';
@@ -15,7 +15,10 @@ function App() {
     new THREE.PerspectiveCamera(60, 1.5, 0.1, 1000)
   );
 
-  cameraRef.current.position.set(0, 0.5, -10);
+  useEffect(() => {
+    cameraRef.current.position.set(0, 0.5, -8);
+    console.log(cameraRef.current.position);
+  }, [cameraRef]);
 
   return (
     <div className="w-screen h-screen">

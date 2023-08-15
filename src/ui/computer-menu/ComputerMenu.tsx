@@ -77,6 +77,9 @@ export function ComputerMenu() {
   };
 
   const handleOptionClick = (menuOption: MenuOption) => () => {
+    if (!active) {
+      return;
+    }
     if (isFunction(menuOption.action)) {
       menuOption.action(menuOption.value);
     } else {
@@ -130,8 +133,9 @@ export function ComputerMenu() {
                 {menuOptions.map((option) => (
                   <li
                     key={option.value}
-                    className={classNames('cursor-pointer', {
+                    className={classNames({
                       selected: option.value === selected,
+                      'cursor-pointer': active,
                     })}
                     onClick={handleOptionClick(option)}
                   >

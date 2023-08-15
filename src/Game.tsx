@@ -1,4 +1,4 @@
-import {Environment} from '@react-three/drei';
+import {Environment, Stars} from '@react-three/drei';
 import {useFrame} from '@react-three/fiber';
 import {
   Bloom,
@@ -18,6 +18,7 @@ import {GameStateContext} from './game-state/game-state-context';
 import {ShowDialogState} from './game-state/states/show-dialog-state';
 import {AudioEffects} from './utils/audio-effects';
 import {useGameInputs} from './utils/game-input-provider/use-game-inputs';
+import {UserData} from './constants/user';
 
 export function Game() {
   const characterRef = useRef<CharaterRef>(null);
@@ -30,7 +31,7 @@ export function Game() {
     internalSetState(ShowDialogState, [
       'Hey!',
       'Welcome to my personal website.',
-      'My name is Carlos Gonzalez.',
+      `My name is ${UserData.firstName} ${UserData.lastName}.`,
       'Feel free to explore my space.',
     ]);
 
@@ -80,6 +81,7 @@ export function Game() {
         <Suspense fallback={null}>
           <Character ref={characterRef} cameraOffset={cameraOffset} />
           <Room ref={roomRef} />
+          <Stars />
         </Suspense>
       </Physics>
       {postProcessingEnabled && (
