@@ -17,7 +17,6 @@ function App() {
 
   useEffect(() => {
     cameraRef.current.position.set(0, 0.5, -8);
-    console.log(cameraRef.current.position);
   }, [cameraRef]);
 
   return (

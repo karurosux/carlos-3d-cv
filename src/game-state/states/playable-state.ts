@@ -12,6 +12,7 @@ export class PlayableState extends GameStateBase {
 
   action() {
     const interactableAction = this.getInteractable();
+
     if (interactableAction) {
       switch (interactableAction.type) {
         case 'dialog':
@@ -32,7 +33,7 @@ export class PlayableState extends GameStateBase {
 
   frame(_: RootState, delta: number): void {
     InteractionTextController.showInteractionText(
-      this.isColldingInteractable()
+      this.isCollidingInteractable()
     );
     this.context.character.checkMovement(delta);
   }
@@ -42,7 +43,7 @@ export class PlayableState extends GameStateBase {
     return colliding && interactableMap[colliding.name];
   }
 
-  private isColldingInteractable() {
+  private isCollidingInteractable() {
     return !!this.getInteractable();
   }
 }

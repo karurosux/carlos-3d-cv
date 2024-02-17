@@ -92,10 +92,10 @@ const Character = forwardRef<CharaterRef, Props>(function Character(
     cameraPosition.current.copy(position.clone().add(getCameraOffset()));
 
     // if (camera.position.z >= 0) {
-      camera.position.lerp(
-        cameraPosition.current,
-        props.cameraMovementSpeed * delta
-      );
+    camera.position.lerp(
+      cameraPosition.current,
+      props.cameraMovementSpeed * delta
+    );
     // }
 
     camera.lookAt(position);
