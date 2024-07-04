@@ -7,9 +7,14 @@ export interface InteractableActionBase {
   type: 'dialog' | 'callback' | 'state';
 }
 
+export type InteractableComplexLine = {
+  context: any;
+  key: string;
+};
+
 export interface InteractableDialogAction extends InteractableActionBase {
   type: 'dialog';
-  lines: string[];
+  lines: (string | InteractableComplexLine)[];
 }
 
 export interface InteractableCallbackAction extends InteractableActionBase {
@@ -37,16 +42,16 @@ export const interactableMap: Record<string, InteractableAction> = {
   },
   'shelve-collider': {
     type: 'dialog',
-    lines: ['A lot of stuff here...', 'This is my shelve.'],
+    lines: ['shelveDialog.line1', 'shelveDialog.line2'],
   },
   'desktop-collider': {
     type: 'state',
     state: ShowComputerMenuState,
-    data: ['Mmmm...', 'There is a menu on the screen.'],
+    data: ['desktopDialog.line1', 'desktopDialog.line2'],
   },
   'thrash-collider': {
     type: 'dialog',
-    lines: ['Just a bunch of monster cans and snack packages.'],
+    lines: ['thrashDialog.line1'],
   },
   'left-wall-collider': {
     type: 'callback',

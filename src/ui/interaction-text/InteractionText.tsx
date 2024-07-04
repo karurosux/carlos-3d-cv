@@ -1,8 +1,14 @@
-import { useState } from "react";
-import { RiSpace } from "react-icons/ri";
-import { InteractionTextController } from "./interaction-text-controller";
+import {useState} from 'react';
+import {InteractionTextController} from './interaction-text-controller';
+import {useTranslation} from 'react-i18next';
+import {RiSpace} from 'react-icons/ri';
 
-export function InteractionText() {
+type Props = {
+  inline?: boolean;
+};
+
+export function InteractionText(props: Props) {
+  const {t} = useTranslation();
   const [showInteractText, setShowInteractText] = useState(false);
 
   InteractionTextController.showInteractionText = (show) => {
@@ -11,6 +17,16 @@ export function InteractionText() {
     }
   };
 
+  const translation = t('interactionText').split('{{iconHere}}');
+
+  if (props.inline) {
+    return (
+      <p className="flex text-3xl text-white uppercase break-keep whitespace-nowrap animate-pulse">
+        {translation[0]} <RiSpace className="mt-2 mx-2" /> {translation[1]}
+      </p>
+    );
+  }
+
   if (!showInteractText) {
     return <></>;
   }
@@ -18,9 +34,7 @@ export function InteractionText() {
   return (
     <div className="fixed z-20 flex justify-center w-full bottom-10">
       <p className="flex text-3xl text-white uppercase break-keep whitespace-nowrap animate-pulse">
-        Press&nbsp;
-        <RiSpace className="mt-2" />
-        &nbsp;to interact
+        {translation[0]} <RiSpace className="mt-2 mx-2" /> {translation[1]}
       </p>
     </div>
   );

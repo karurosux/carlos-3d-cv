@@ -9,8 +9,10 @@ import {computerMenuViewMap} from './views/computer-menu-view-map';
 import {ComputerMenuManager} from './computer-menu-manager';
 import {Html} from '@react-three/drei';
 import {AudioEffects} from '../../utils/audio-effects';
+import {useTranslation} from 'react-i18next';
 
 export function ComputerMenu() {
+  const {t} = useTranslation();
   const [selected, setSelected] = useState(MenuSelection.General);
   const gameInputs = useGameInputs();
   const [active, setActive] = useState(false);
@@ -89,23 +91,23 @@ export function ComputerMenu() {
 
   const menuOptions: MenuOption[] = [
     {
-      label: 'General',
+      label: 'general.general',
       value: MenuSelection.General,
     },
     {
-      label: 'Education',
+      label: 'general.education',
       value: MenuSelection.Education,
     },
     {
-      label: 'Job History',
+      label: 'jobHistory.title',
       value: MenuSelection.JobHistory,
     },
     {
-      label: 'Contact',
+      label: 'general.contact',
       value: MenuSelection.Contact,
     },
     {
-      label: 'Exit',
+      label: 'general.exit',
       value: MenuSelection.Exit,
       action: () => {
         setActive(false);
@@ -139,7 +141,7 @@ export function ComputerMenu() {
                     })}
                     onClick={handleOptionClick(option)}
                   >
-                    {option.label}
+                    {t(option.label)}
                   </li>
                 ))}
               </ul>

@@ -19,6 +19,7 @@ import {ShowDialogState} from './game-state/states/show-dialog-state';
 import {AudioEffects} from './utils/audio-effects';
 import {useGameInputs} from './utils/game-input-provider/use-game-inputs';
 import {UserData} from './constants/user';
+import {PPUtils} from './utils/pp-util';
 
 export function Game() {
   const characterRef = useRef<CharaterRef>(null);
@@ -29,10 +30,13 @@ export function Game() {
 
   useEffect(() => {
     internalSetState(ShowDialogState, [
-      'Hey!',
-      'Welcome to my personal website.',
-      `My name is ${UserData.firstName} ${UserData.lastName}.`,
-      'Feel free to explore my space.',
+      'introDialog.line1',
+      'introDialog.line2',
+      {
+        key: 'introDialog.line3',
+        context: {firstName: UserData.firstName, lastName: UserData.lastName},
+      },
+      'introDialog.line4',
     ]);
 
     AudioEffects.initializeAudios();
@@ -70,7 +74,7 @@ export function Game() {
     gameStateRef.current = newState;
   }
 
-  const postProcessingEnabled = window.location.search.includes('pp=true');
+  const postProcessingEnabled = PPUtils.hasPP();
 
   return (
     <>

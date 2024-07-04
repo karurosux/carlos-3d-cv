@@ -1,9 +1,12 @@
+import {useTranslation} from 'react-i18next';
 import {education} from '../../../constants/education';
 
 export function Education() {
+  const {t} = useTranslation();
+
   return (
     <div className="education">
-      <h1 className="mb-4 font-bold">Education</h1>
+      <h1 className="mb-4 font-bold">{t('general.education')}</h1>
       <div>
         <ul>
           {education.map((item) => (
@@ -13,7 +16,7 @@ export function Education() {
               </h2>
               <ul className="text-4xl">
                 <li>
-                  <b>Place:</b> {item.place}
+                  <b>{t('general.place')}</b> {item.place}
                 </li>
                 <li>
                   <b>Website:</b>{' '}

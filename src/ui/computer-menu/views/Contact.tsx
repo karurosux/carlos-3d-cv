@@ -1,9 +1,11 @@
+import {useTranslation} from 'react-i18next';
 import {ContactInformation} from '../../../constants/contact';
 
 export function Contact() {
+  const {t} = useTranslation();
   return (
     <div className="contact">
-      <h3 className="mb-4 font-bold">Contact</h3>
+      <h3 className="mb-4 font-bold">{t('general.contact')}</h3>
       <ul className="[&>li]:mt-4 text-4xl [&>li]:border-b-2 [&>li]:border-dashed [&>li]:py-2">
         <li>
           <b>Linked In(preferred):</b>{' '}

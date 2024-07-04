@@ -9,6 +9,8 @@ import {InteractionText} from './ui/interaction-text/InteractionText';
 import {LoadingPage} from './ui/loading-page/LoadingPage';
 import {GameInputProvider} from './utils/game-input-provider/GameInputProvider';
 import {ControlsOverlay} from './ui/controls-overlay/ControlsOVerlay';
+import {I18nextProvider} from 'react-i18next';
+import {i18n} from './i18n';
 
 function App() {
   const cameraRef = useRef<THREE.PerspectiveCamera>(
@@ -21,18 +23,20 @@ function App() {
 
   return (
     <div className="w-screen h-screen">
-      <GameInputProvider>
-        <Canvas camera={cameraRef.current}>
-          <Game />
-          <Preload all />
-          <AdaptiveDpr pixelated />
-        </Canvas>
-        <DialogBox />
-        <LoadingPage />
-        <InteractionText />
-        <MobileButtons />
-        <ControlsOverlay />
-      </GameInputProvider>
+      <I18nextProvider i18n={i18n}>
+        <GameInputProvider>
+          <Canvas camera={cameraRef.current}>
+            <Game />
+            <Preload all />
+            <AdaptiveDpr pixelated />
+          </Canvas>
+          <DialogBox />
+          <LoadingPage />
+          <InteractionText />
+          <MobileButtons />
+          <ControlsOverlay />
+        </GameInputProvider>
+      </I18nextProvider>
     </div>
   );
 }

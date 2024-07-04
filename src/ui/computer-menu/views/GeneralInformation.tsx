@@ -1,32 +1,42 @@
+import {useTranslation} from 'react-i18next';
 import {UserData} from '../../../constants/user';
 
 export function GeneralInformation() {
+  const {t} = useTranslation();
+  const {
+    firstName,
+    lastName,
+    currentCompanyWebsite,
+    currentTitle,
+    hobbies,
+    nickName,
+    birthDate,
+    birthPlace,
+    currentRole,
+    currentCompany,
+    currentLocation,
+  } = UserData;
   return (
     <div className="h-full">
-      <h3 className="mb-4 font-bold">General Information</h3>
-      <p className="text-4xl">
-        <span className="inline-block mt-8">
-          My name is{' '}
-          <b>
-            {UserData.firstName} {UserData.lastName}
-          </b>{' '}
-          and you can call me {UserData.nickName}, I am a{' '}
-          {UserData.currentTitle} who currently work mostly as a{' '}
-          {UserData.currentRole} at{' '}
-          <a
-            className="underline"
-            target="_blank"
-            href={UserData.currentCompanyWebsite}
-          >
-            {UserData.currentCompany}
-          </a>
-          .
-        </span>
-        <span className="inline-block mt-8">
-          I am from {UserData.birthPlace}, currently living at{' '}
-          {UserData.currentLocation} waiting for new adventures.
-        </span>
-      </p>
+      <h3 className="mb-4 font-bold">{t('generalInformation.title')}</h3>
+      <p
+        className="text-4xl"
+        dangerouslySetInnerHTML={{
+          __html: t('generalInformation.message', {
+            firstName,
+            lastName,
+            currentCompanyWebsite,
+            currentTitle,
+            hobbies,
+            nickName,
+            birthDate,
+            birthPlace,
+            currentRole,
+            currentCompany,
+            currentLocation,
+          }),
+        }}
+      />
     </div>
   );
 }

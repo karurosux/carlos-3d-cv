@@ -4,11 +4,16 @@ import {RiArrowDropDownFill, RiSpace} from 'react-icons/ri';
 import {TypewritterEffect} from '../../utils/typewritter-effect';
 import {DialogBoxController} from './dialog-box-controller';
 import {AudioEffects} from '../../utils/audio-effects';
+import {useTranslation} from 'react-i18next';
+import {InteractableDialogAction} from '../../interactable-map';
 
 export function DialogBox() {
+  const {t} = useTranslation();
   const divRef = useRef<HTMLDivElement>(null);
   const [dialogBoxVisible, setDialogBoxVisible] = useState(false);
-  const [textLines, setTextLines] = useState<string[]>([]);
+  const [textLines, setTextLines] = useState<InteractableDialogAction['lines']>(
+    []
+  );
   const [currentIndex, setCurrentIndex] = useState(0);
   const typewritterRef = useRef(
     new TypewritterEffect((txt) => {
@@ -22,9 +27,19 @@ export function DialogBox() {
   }, [textLines]);
 
   useEffect(() => {
-    const currentTextLine = textLines?.[currentIndex];
+    const interactableKey = textLines?.[currentIndex];
+
+    if (!interactableKey) {
+      return;
+    }
+
+    const currentTextLine =
+      typeof interactableKey === 'string'
+        ? t(interactableKey)
+        : t(interactableKey.key, interactableKey.context);
+
     if (currentTextLine) {
-      typewritterRef.current.type(currentTextLine);
+      typewritterRef.current.type(currentTextLine as string);
       if (!dialogBoxVisible) {
         // If its not visible, make it
         setDialogBoxVisible(true);
@@ -58,6 +73,8 @@ export function DialogBox() {
     setCurrentIndex(nextIndex);
   }
 
+  const continueTranslation = t('continuationText').split('{{iconHere}}');
+
   return (
     <>
       <div className="fixed flex justify-center w-full bottom-24">
@@ -76,9 +93,9 @@ export function DialogBox() {
         <>
           <div className="fixed z-20 flex justify-center w-full sm:bottom-2 lg:bottom-10">
             <p className="flex text-white uppercase sm:text-xs lg:text-3xl break-keep whitespace-nowrap animate-pulse">
-              Press&nbsp;
-              <RiSpace className="mt-2" />
-              &nbsp;to continue
+              {continueTranslation[0]}
+              <RiSpace className="mt-2 mx-2" />
+              {continueTranslation[1]}
             </p>
           </div>
         </>
