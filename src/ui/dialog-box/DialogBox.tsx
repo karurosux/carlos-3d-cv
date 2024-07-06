@@ -82,7 +82,7 @@ export function DialogBox() {
           id="dialog-box"
           className={classNames(
             [{hidden: !dialogBoxVisible}],
-            'relative z-10 p-8 text-white bg-black w-full max-w-[1200px] border-white select-none mx-10 opacity-60 h-96 border-8 text-7xl'
+            'relative z-10 p-8 text-white bg-black w-full max-w-[1200px] border-white select-none mx-10 opacity-60 h-96 border-8 text-7xl transform xl:scale-50 2xl:scale-100 xl:translate-y-[20%] 2xl:translate-y-0'
           )}
         >
           <div ref={divRef} />

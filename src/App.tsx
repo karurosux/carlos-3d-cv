@@ -8,7 +8,7 @@ import {DialogBox} from './ui/dialog-box/DialogBox';
 import {InteractionText} from './ui/interaction-text/InteractionText';
 import {LoadingPage} from './ui/loading-page/LoadingPage';
 import {GameInputProvider} from './utils/game-input-provider/GameInputProvider';
-import {ControlsOverlay} from './ui/controls-overlay/ControlsOVerlay';
+import {ControlsOverlay} from './ui/controls-overlay/ControlsOverlay';
 import {I18nextProvider} from 'react-i18next';
 import {i18n} from './i18n';
 

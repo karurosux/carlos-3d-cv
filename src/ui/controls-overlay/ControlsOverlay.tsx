@@ -10,21 +10,23 @@ import {en} from '../../locales/en';
 import {i18n} from '../../i18n';
 import {es} from '../../locales/es';
 import {PPUtils} from '../../utils/pp-util';
+import {SyntheticEvent} from 'react';
 
 export function ControlsOverlay() {
   const {t} = useTranslation();
 
-  const handleChangeLanguage = (lang: string) => () => {
-    window.localStorage.setItem('lang', lang);
+  const handleTogglePostProcess = () => PPUtils.togglePPParam();
+
+  const handleSelectChange = (evt: SyntheticEvent<HTMLSelectElement>) => {
+    const value = (evt.target as any)?.['value'];
+    window.localStorage.setItem('lang', value);
     window.location.reload();
   };
 
-  const handleTogglePostProcess = () => PPUtils.togglePPParam();
-
   return (
     <>
-      <div className="top-left-container fixed top-4 left-4 max-w-[250px]">
-        <UIBox className="w-auto h-auto border p-2 mb-2">
+      <div className="top-left-container fixed top-4 left-4 xl:max-w-[250px]">
+        <UIBox className="!w-auto !h-auto !border !p-2 mb-2">
           <span>
             <h2 className="text-3xl font-bold mb-2">{t('general.controls')}</h2>
             <h4 className="text-2xl underline">{t('general.movement')}</h4>
@@ -41,7 +43,7 @@ export function ControlsOverlay() {
             </span>
           </span>
         </UIBox>
-        <UIBox className="w-auto h-auto border p-2">
+        <UIBox className="!w-auto !h-auto !border !p-2">
           <p className="text-xl">{t('indications.general')}</p>
         </UIBox>
       </div>
@@ -54,19 +56,18 @@ export function ControlsOverlay() {
         </button>
         <select
           value={i18n.language}
-          className="p-2 border-2 border-white bg-transparent text-white cursor-pointer"
+          className="p-2 border-2 border-white bg-transparent text-white cursor-pointer outline-none"
+          onChange={handleSelectChange}
         >
           <option
-            className="hover:cursor-pointer"
+            className="bg-gray-700 text-white p-2 rounded-none"
             value="en"
-            onClick={handleChangeLanguage('en')}
           >
             {en.name}
           </option>
           <option
-            className="hover:cursor-pointer"
+            className="bg-gray-700 text-white p-2 rounded-none"
             value="es"
-            onClick={handleChangeLanguage('es')}
           >
             {es.name}
           </option>
