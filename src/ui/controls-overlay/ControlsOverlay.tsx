@@ -25,38 +25,38 @@ export function ControlsOverlay() {
 
   return (
     <>
-      <div className="top-left-container fixed top-4 left-4 xl:max-w-[250px]">
+      <div className="top-left-container fixed top-2 left-2 sm:top-4 sm:left-4 xl:max-w-[250px] max-w-[200px] sm:max-w-none">
         <UIBox className="!w-auto !h-auto !border !p-2 mb-2">
           <span>
-            <h2 className="text-3xl font-bold mb-2">{t('general.controls')}</h2>
-            <h4 className="text-2xl underline">{t('general.movement')}</h4>
-            <span className="text-2xl block">
+            <h2 className="text-lg sm:text-3xl font-bold mb-2">{t('general.controls')}</h2>
+            <h4 className="text-base sm:text-2xl underline">{t('general.movement')}</h4>
+            <span className="text-base sm:text-2xl block">
               <RiArrowLeftFill className="inline" />
               <RiArrowDownFill className="inline" />
               <RiArrowRightFill className="inline" />
               <RiArrowUpFill className="inline" /> |
-              <b className="!text-1xl ml-2">WASD</b>
+              <b className="text-sm sm:!text-1xl ml-2">WASD</b>
             </span>
-            <h4 className="text-2xl underline">{t('general.interact')}</h4>
-            <span className="text-xl block">
+            <h4 className="text-base sm:text-2xl underline">{t('general.interact')}</h4>
+            <span className="text-sm sm:text-xl block">
               {t('indications.spaceBarMessage')}
             </span>
           </span>
         </UIBox>
         <UIBox className="!w-auto !h-auto !border !p-2">
-          <p className="text-xl">{t('indications.general')}</p>
+          <p className="text-sm sm:text-xl">{t('indications.general')}</p>
         </UIBox>
       </div>
-      <div className="top-right-container fixed top-4 right-4 hover:touch-pan-right">
+      <div className="top-right-container fixed top-2 right-2 sm:top-4 sm:right-4 hover:touch-pan-right">
         <button
-          className="border-2 mr-2 text-white p-2 cursor-pointer"
+          className="border-2 mr-1 sm:mr-2 text-white p-1 sm:p-2 cursor-pointer text-sm sm:text-base"
           onClick={handleTogglePostProcess}
         >
           {t('togglePostProcess')}
         </button>
         <select
           value={i18n.language}
-          className="p-2 border-2 border-white bg-transparent text-white cursor-pointer outline-none"
+          className="border-2 mr-1 sm:mr-2 text-white p-1 sm:p-2 cursor-pointer bg-transparent outline-none appearance-none h-auto text-sm sm:text-base"
           onChange={handleSelectChange}
         >
           <option
