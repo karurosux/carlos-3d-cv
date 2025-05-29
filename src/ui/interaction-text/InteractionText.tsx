@@ -21,8 +21,8 @@ export function InteractionText(props: Props) {
 
   if (props.inline) {
     return (
-      <p className="flex text-3xl text-white uppercase break-keep whitespace-nowrap animate-pulse">
-        {translation[0]} <RiSpace className="mt-2 mx-2" /> {translation[1]}
+      <p className="flex text-base sm:text-3xl text-white uppercase break-keep whitespace-nowrap animate-pulse">
+        {translation[0]} <RiSpace className="mt-0 sm:mt-2 mx-1 sm:mx-2" /> {translation[1]}
       </p>
     );
   }
@@ -32,9 +32,9 @@ export function InteractionText(props: Props) {
   }
 
   return (
-    <div className="fixed z-20 flex justify-center w-full bottom-10">
-      <p className="flex text-3xl text-white uppercase break-keep whitespace-nowrap animate-pulse">
-        {translation[0]} <RiSpace className="mt-2 mx-2" /> {translation[1]}
+    <div className="fixed z-20 flex justify-center w-full bottom-6 sm:bottom-10">
+      <p className="flex text-base sm:text-3xl text-white uppercase break-keep whitespace-nowrap animate-pulse">
+        {translation[0]} <RiSpace className="mt-0 sm:mt-2 mx-1 sm:mx-2" /> {translation[1]}
       </p>
     </div>
   );

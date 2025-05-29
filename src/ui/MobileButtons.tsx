@@ -23,36 +23,11 @@ export function MobileButtons() {
     if (touchRefs.current[direction]) return; // Prevent multiple triggers
     touchRefs.current[direction] = true;
     gameInput[direction] = true;
-    
-    // Simulate key press event to trigger subscribers
-    const keyMap = {
-      forward: 'KeyW',
-      backward: 'KeyS', 
-      left: 'KeyA',
-      right: 'KeyD',
-      action: 'Space'
-    };
-    
-    const event = new KeyboardEvent('keydown', { code: keyMap[direction] });
-    window.dispatchEvent(event);
   };
 
   const handleTouchEnd = (direction: keyof typeof touchRefs.current) => {
-    if (!touchRefs.current[direction]) return; // Prevent multiple triggers
     touchRefs.current[direction] = false;
     gameInput[direction] = false;
-    
-    // Simulate key release event to trigger subscribers
-    const keyMap = {
-      forward: 'KeyW',
-      backward: 'KeyS',
-      left: 'KeyA', 
-      right: 'KeyD',
-      action: 'Space'
-    };
-    
-    const event = new KeyboardEvent('keyup', { code: keyMap[direction] });
-    window.dispatchEvent(event);
   };
 
   return (
@@ -63,8 +38,9 @@ export function MobileButtons() {
           <button
             type="button"
             className="w-0 h-0 border-l-[15px] border-r-[15px] border-b-[20px] sm:border-l-[25px] sm:border-r-[25px] sm:border-b-[35px] border-solid border-l-transparent border-r-transparent border-b-white bg-no-repeat bg-contain absolute top-1 sm:top-2 left-1/2 -translate-x-1/2 select-none"
-            onTouchStart={() => handleTouchStart('forward')}
-            onTouchEnd={() => handleTouchEnd('forward')}
+            onTouchStart={(e) => { e.preventDefault(); handleTouchStart('forward'); }}
+            onTouchEnd={(e) => { e.preventDefault(); handleTouchEnd('forward'); }}
+            onTouchCancel={(e) => { e.preventDefault(); handleTouchEnd('forward'); }}
             onMouseDown={() => handleTouchStart('forward')}
             onMouseUp={() => handleTouchEnd('forward')}
             onMouseLeave={() => handleTouchEnd('forward')}
@@ -73,8 +49,9 @@ export function MobileButtons() {
           <button
             type="button"
             className="w-0 h-0 border-t-[15px] border-b-[15px] border-r-[20px] sm:border-t-[25px] sm:border-b-[25px] sm:border-r-[35px] border-solid border-t-transparent border-b-transparent border-r-white bg-no-repeat bg-contain absolute left-1 sm:left-2 top-1/2 -translate-y-1/2 select-none"
-            onTouchStart={() => handleTouchStart('left')}
-            onTouchEnd={() => handleTouchEnd('left')}
+            onTouchStart={(e) => { e.preventDefault(); handleTouchStart('left'); }}
+            onTouchEnd={(e) => { e.preventDefault(); handleTouchEnd('left'); }}
+            onTouchCancel={(e) => { e.preventDefault(); handleTouchEnd('left'); }}
             onMouseDown={() => handleTouchStart('left')}
             onMouseUp={() => handleTouchEnd('left')}
             onMouseLeave={() => handleTouchEnd('left')}
@@ -83,8 +60,9 @@ export function MobileButtons() {
           <button
             type="button"
             className="w-0 h-0 border-l-[15px] border-r-[15px] border-t-[20px] sm:border-l-[25px] sm:border-r-[25px] sm:border-t-[35px] border-solid border-l-transparent border-r-transparent border-t-white bg-no-repeat bg-contain absolute bottom-1 sm:bottom-2 left-1/2 -translate-x-1/2 select-none"
-            onTouchStart={() => handleTouchStart('backward')}
-            onTouchEnd={() => handleTouchEnd('backward')}
+            onTouchStart={(e) => { e.preventDefault(); handleTouchStart('backward'); }}
+            onTouchEnd={(e) => { e.preventDefault(); handleTouchEnd('backward'); }}
+            onTouchCancel={(e) => { e.preventDefault(); handleTouchEnd('backward'); }}
             onMouseDown={() => handleTouchStart('backward')}
             onMouseUp={() => handleTouchEnd('backward')}
             onMouseLeave={() => handleTouchEnd('backward')}
@@ -93,8 +71,9 @@ export function MobileButtons() {
           <button
             type="button"
             className="w-0 h-0 border-t-[15px] border-b-[15px] border-l-[20px] sm:border-t-[25px] sm:border-b-[25px] sm:border-l-[35px] border-solid border-t-transparent border-b-transparent border-l-white bg-no-repeat bg-contain absolute right-1 sm:right-2 top-1/2 -translate-y-1/2 select-none"
-            onTouchStart={() => handleTouchStart('right')}
-            onTouchEnd={() => handleTouchEnd('right')}
+            onTouchStart={(e) => { e.preventDefault(); handleTouchStart('right'); }}
+            onTouchEnd={(e) => { e.preventDefault(); handleTouchEnd('right'); }}
+            onTouchCancel={(e) => { e.preventDefault(); handleTouchEnd('right'); }}
             onMouseDown={() => handleTouchStart('right')}
             onMouseUp={() => handleTouchEnd('right')}
             onMouseLeave={() => handleTouchEnd('right')}
@@ -106,8 +85,9 @@ export function MobileButtons() {
         <div className="">
           <button 
             className="bg-white rounded-full w-16 h-16 sm:w-28 sm:h-28 select-none flex items-center justify-center text-black font-bold text-sm sm:text-lg"
-            onTouchStart={() => handleTouchStart('action')}
-            onTouchEnd={() => handleTouchEnd('action')}
+            onTouchStart={(e) => { e.preventDefault(); handleTouchStart('action'); }}
+            onTouchEnd={(e) => { e.preventDefault(); handleTouchEnd('action'); }}
+            onTouchCancel={(e) => { e.preventDefault(); handleTouchEnd('action'); }}
             onMouseDown={() => handleTouchStart('action')}
             onMouseUp={() => handleTouchEnd('action')}
             onMouseLeave={() => handleTouchEnd('action')}

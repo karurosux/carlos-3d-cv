@@ -77,24 +77,24 @@ export function DialogBox() {
 
   return (
     <>
-      <div className="fixed flex justify-center w-full bottom-24">
+      <div className="fixed flex justify-center w-full bottom-20 sm:bottom-24">
         <div
           id="dialog-box"
           className={classNames(
             [{hidden: !dialogBoxVisible}],
-            'relative z-10 p-8 text-white bg-black w-full max-w-[1200px] border-white select-none mx-10 opacity-60 h-96 border-8 text-7xl transform xl:scale-50 2xl:scale-100 xl:translate-y-[20%] 2xl:translate-y-0'
+            'relative z-10 p-2 sm:p-8 text-white bg-black w-full max-w-[300px] sm:max-w-[1200px] border-white select-none mx-2 sm:mx-10 opacity-60 h-32 sm:h-96 border-2 sm:border-8 text-lg sm:text-7xl transform xl:scale-50 2xl:scale-100 xl:translate-y-[20%] 2xl:translate-y-0'
           )}
         >
           <div ref={divRef} />
-          <RiArrowDropDownFill className="absolute z-20 text-white bottom-1 right-2 text-8xl animate-pulse animate-bounce" />
+          <RiArrowDropDownFill className="absolute z-20 text-white bottom-0 sm:bottom-1 right-1 sm:right-2 text-2xl sm:text-8xl animate-pulse animate-bounce" />
         </div>
       </div>
       {dialogBoxVisible && (
         <>
           <div className="fixed z-20 flex justify-center w-full sm:bottom-2 lg:bottom-10">
-            <p className="flex text-white uppercase sm:text-xs lg:text-3xl break-keep whitespace-nowrap animate-pulse">
+            <p className="flex text-white uppercase text-xs sm:text-xs lg:text-3xl break-keep whitespace-nowrap animate-pulse">
               {continueTranslation[0]}
-              <RiSpace className="mt-2 mx-2" />
+              <RiSpace className="mt-0 sm:mt-2 mx-1 sm:mx-2" />
               {continueTranslation[1]}
             </p>
           </div>
