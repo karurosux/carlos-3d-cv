@@ -1,7 +1,7 @@
 import {MeshPhysicalMaterialProps, useLoader} from '@react-three/fiber';
 import {CuboidCollider, CylinderCollider} from '@react-three/rapier';
 import {kebabCase} from 'lodash';
-import {forwardRef, useImperativeHandle, useRef} from 'react';
+import {forwardRef, useImperativeHandle, useRef, useMemo} from 'react';
 import * as THREE from 'three';
 import {GLTF, GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader.js';
 import {ROOM_LAMP_INTENSITY} from '../constants';
@@ -18,30 +18,42 @@ const Room = forwardRef(function (_, ref) {
   const lightRef = useRef<THREE.PointLight>(null);
   const gltf: GLTF = useLoader(GLTFLoader, 'models/room.glb');
 
+  // Cache object references to avoid expensive traversals
+  const objectCache = useMemo(() => {
+    const cache = new Map<string, THREE.Object3D>();
+    gltf.scene.traverse((obj: THREE.Object3D) => {
+      const key = kebabCase(obj.name);
+      if (key && !cache.has(key)) {
+        cache.set(key, obj);
+      }
+    });
+    return cache;
+  }, [gltf.scene]);
+
+  // Cache lamp cover specifically for toggle function
+  const lampCover = useMemo(() => {
+    return objectCache.get('lamp-cover');
+  }, [objectCache]);
+
   useImperativeHandle(ref, () => ({
     toggleLight,
     findRoomObject,
   }));
 
   function findRoomObject(name: string) {
-    let result: THREE.Object3D;
-    gltf.scene.traverse((obj: THREE.Object3D) => {
-      if (kebabCase(obj.name) === kebabCase(name)) {
-        result = obj;
-      }
-    });
-    return result;
+    return objectCache.get(kebabCase(name)) || null;
   }
 
   function toggleLight() {
     const isOff = lightRef.current.intensity === 0;
-    gltf.scene.traverse((obj) => {
-      if (kebabCase(obj.name) === 'lamp-cover') {
-        const mesh = obj as THREE.Mesh;
-        const material = mesh.material as MeshPhysicalMaterialProps;
-        material.emissiveIntensity = isOff ? 10 : 0;
-      }
-    });
+    
+    // Use cached lamp cover instead of traversing scene
+    if (lampCover) {
+      const mesh = lampCover as THREE.Mesh;
+      const material = mesh.material as MeshPhysicalMaterialProps;
+      material.emissiveIntensity = isOff ? 10 : 0;
+    }
+    
     lightRef.current.intensity = isOff ? ROOM_LAMP_INTENSITY : 0;
     AudioEffects.play('switch');
   }

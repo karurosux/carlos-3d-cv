@@ -20,6 +20,7 @@ import {AudioEffects} from './utils/audio-effects';
 import {useGameInputs} from './utils/game-input-provider/use-game-inputs';
 import {UserData} from './constants/user';
 import {PPUtils} from './utils/pp-util';
+import {QualityManager} from './utils/performance-monitor';
 
 export function Game() {
   const characterRef = useRef<CharaterRef>(null);
@@ -27,6 +28,7 @@ export function Game() {
   const [cameraOffset, setCameraOffset] = useState(new THREE.Vector3(0, 2, 3));
   const gameStateRef = useRef<GameStateBase>();
   const {getInput, subscribeKey} = useGameInputs();
+  const [qualitySettings, setQualitySettings] = useState(() => QualityManager.getInstance().getSettings());
 
   useEffect(() => {
     internalSetState(ShowDialogState, [
@@ -41,6 +43,22 @@ export function Game() {
 
     AudioEffects.initializeAudios();
 
+    // Enable audio after first user interaction
+    const enableAudio = () => {
+      AudioEffects.canPlay = true;
+      document.removeEventListener('click', enableAudio);
+      document.removeEventListener('touchstart', enableAudio);
+      document.removeEventListener('keydown', enableAudio);
+    };
+
+    document.addEventListener('click', enableAudio);
+    document.addEventListener('touchstart', enableAudio);
+    document.addEventListener('keydown', enableAudio);
+
+    // Subscribe to quality changes
+    const qualityManager = QualityManager.getInstance();
+    const unsubscribeQuality = qualityManager.onSettingsChange(setQualitySettings);
+
     const unsubscribe = subscribeKey(
       (state) => state.action,
       () => {
@@ -50,6 +68,10 @@ export function Game() {
 
     return () => {
       unsubscribe();
+      unsubscribeQuality();
+      document.removeEventListener('click', enableAudio);
+      document.removeEventListener('touchstart', enableAudio);
+      document.removeEventListener('keydown', enableAudio);
     };
   }, [gameStateRef]);
 
@@ -74,7 +96,7 @@ export function Game() {
     gameStateRef.current = newState;
   }
 
-  const postProcessingEnabled = PPUtils.hasPP();
+  const postProcessingEnabled = PPUtils.hasPP() && qualitySettings.postProcessing;
 
   return (
     <>

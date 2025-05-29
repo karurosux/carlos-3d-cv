@@ -1,16 +1,44 @@
 import {AdaptiveDpr, Preload} from '@react-three/drei';
 import {Canvas} from '@react-three/fiber';
-import {useEffect, useRef} from 'react';
+import {useEffect, useRef, lazy, Suspense} from 'react';
 import * as THREE from 'three';
 import {Game} from './Game';
 import {MobileButtons} from './ui/MobileButtons';
-import {DialogBox} from './ui/dialog-box/DialogBox';
-import {InteractionText} from './ui/interaction-text/InteractionText';
-import {LoadingPage} from './ui/loading-page/LoadingPage';
 import {GameInputProvider} from './utils/game-input-provider/GameInputProvider';
-import {ControlsOverlay} from './ui/controls-overlay/ControlsOverlay';
 import {I18nextProvider} from 'react-i18next';
 import {i18n} from './i18n';
+
+// Lazy load components
+const DialogBox = lazy(() =>
+  import('./ui/dialog-box/DialogBox').then((module) => ({
+    default: module.DialogBox,
+  }))
+);
+const InteractionText = lazy(() =>
+  import('./ui/interaction-text/InteractionText').then((module) => ({
+    default: module.InteractionText,
+  }))
+);
+const LoadingPage = lazy(() =>
+  import('./ui/loading-page/LoadingPage').then((module) => ({
+    default: module.LoadingPage,
+  }))
+);
+const ControlsOverlay = lazy(() =>
+  import('./ui/controls-overlay/ControlsOverlay').then((module) => ({
+    default: module.ControlsOverlay,
+  }))
+);
+const ShareMenu = lazy(() =>
+  import('./ui/share-menu/ShareMenu').then((module) => ({
+    default: module.ShareMenu,
+  }))
+);
+const PerformanceOverlay = lazy(() =>
+  import('./ui/performance-overlay/PerformanceOverlay').then((module) => ({
+    default: module.PerformanceOverlay,
+  }))
+);
 
 function App() {
   const cameraRef = useRef<THREE.PerspectiveCamera>(
@@ -30,11 +58,15 @@ function App() {
             <Preload all />
             <AdaptiveDpr pixelated />
           </Canvas>
-          <DialogBox />
-          <LoadingPage />
-          <InteractionText />
+          <Suspense fallback={null}>
+            <DialogBox />
+            <LoadingPage />
+            <InteractionText />
+            <ControlsOverlay />
+            <ShareMenu />
+            <PerformanceOverlay />
+          </Suspense>
           <MobileButtons />
-          <ControlsOverlay />
         </GameInputProvider>
       </I18nextProvider>
     </div>
