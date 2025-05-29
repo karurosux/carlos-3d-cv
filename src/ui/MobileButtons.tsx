@@ -20,13 +20,39 @@ export function MobileButtons() {
   }
 
   const handleTouchStart = (direction: keyof typeof touchRefs.current) => {
+    if (touchRefs.current[direction]) return; // Prevent multiple triggers
     touchRefs.current[direction] = true;
     gameInput[direction] = true;
+    
+    // Simulate key press event to trigger subscribers
+    const keyMap = {
+      forward: 'KeyW',
+      backward: 'KeyS', 
+      left: 'KeyA',
+      right: 'KeyD',
+      action: 'Space'
+    };
+    
+    const event = new KeyboardEvent('keydown', { code: keyMap[direction] });
+    window.dispatchEvent(event);
   };
 
   const handleTouchEnd = (direction: keyof typeof touchRefs.current) => {
+    if (!touchRefs.current[direction]) return; // Prevent multiple triggers
     touchRefs.current[direction] = false;
     gameInput[direction] = false;
+    
+    // Simulate key release event to trigger subscribers
+    const keyMap = {
+      forward: 'KeyW',
+      backward: 'KeyS',
+      left: 'KeyA', 
+      right: 'KeyD',
+      action: 'Space'
+    };
+    
+    const event = new KeyboardEvent('keyup', { code: keyMap[direction] });
+    window.dispatchEvent(event);
   };
 
   return (
